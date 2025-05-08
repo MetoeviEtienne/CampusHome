@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* resources/css/app.css */
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.navbar a {
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #ffb74d;
+}
+
+.form-container {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    color: #1a202c;
+}
+
+.form-container input {
+    border: 1px solid #cbd5e0;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-container input:focus {
+    border-color: #4a90e2;
+}
+
+.form-container button {
+    background-color: #ffa500;
+    color: #ffffff;
+    border-radius: 0.375rem;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.form-container button:hover {
+    background-color: #e08d00;
+}
+
