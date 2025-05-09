@@ -27,6 +27,23 @@ class User extends Authenticatable
         'ville',
         'id_document'
     ];
+  
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+    
+    public function isOwner()
+    {
+        return $this->role === 'proprietaire';
+    }
+    
+    public function isStudent()
+    {
+        return $this->role === 'etudiant';
+    }
+
+
 
     /**
      * The attributes that should be hidden for serialization.

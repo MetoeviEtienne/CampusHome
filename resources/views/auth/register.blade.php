@@ -23,7 +23,7 @@
                  <div class="mt-4 mb-4">
                     <x-input-label for="phone" :value="__('Téléphone')" />
                     <x-text-input id="phone" class="mt-1 block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" type="phone" name="phone" :value="old('phone')" required autocomplete="username" />
-                    <x-input-error :messages="$errors->get('téléphone')" class="mt-2" />
+                    <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                 </div>
 
                 <!-- Ville -->
@@ -34,8 +34,8 @@
                 </div>
 
                 <div class="mt-4 mb-4">
-                    <x-input-label for="role" :value="__('Rôle')" />
-                    <select name="role" id="role" class="mt-1 block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                    <x-input-label for="role" :value="__('Vous êtes')" />
+                    <select id="role" name="role" class="mt-1 block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
                         <option value="student">Étudiant</option>
                         <option value="owner">Propriétaire</option>
                     </select>
@@ -62,6 +62,7 @@
                         Déjà inscrit ?
                     </a>
 
+                
                     <x-primary-button class="bg-indigo-600 hover:bg-indigo-700 text-black font-bold py-3 px-6 rounded-lg text-lg">
                         {{ __('S\'inscrire') }}
                     </x-primary-button>

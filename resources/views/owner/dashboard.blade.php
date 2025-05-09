@@ -1,1 +1,0 @@
-<h1>Bienvenue dans l'interface du propriétaire</h1>
