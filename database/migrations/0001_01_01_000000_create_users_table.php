@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('id_document')->nullable(); // Pour stocker le chemin du fichier
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreignId('create_roles')->nullable()->constrained('users')->onDelete('set null');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

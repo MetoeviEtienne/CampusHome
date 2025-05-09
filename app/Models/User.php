@@ -28,19 +28,14 @@ class User extends Authenticatable
         'id_document'
     ];
   
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
-    
     public function isOwner()
     {
-        return $this->role === 'proprietaire';
+        return $this->role === 'owner';
     }
     
     public function isStudent()
     {
-        return $this->role === 'etudiant';
+        return $this->role === 'student';
     }
 
 

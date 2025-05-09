@@ -9,9 +9,9 @@ Route::get('/', function () {
     return view('campushome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,12 +27,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Tableau de bord étudiant
     Route::get('/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard')->middleware('role:student');
+    // })->name('dashboard')->middleware('role:student');
+    })->name('dashboard');
 
     // Tableau de bord propriétaire
     Route::get('/proprietaire/dashboard', function () {
         return view('proprietaire.dashboard');
-    })->name('proprietaire.dashboard')->middleware('role:owner');
+    })->name('proprietaire.dashboard');
 });
 
 

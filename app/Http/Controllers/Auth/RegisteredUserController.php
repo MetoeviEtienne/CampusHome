@@ -51,8 +51,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-            //return redirect(route('dashboard', absolute: false));
-            // Rediriger après l'inscription
-            return redirect()->route('login')->with('success', 'Inscription réussie !');
+        if ($user->isOwner()) {
+            return redirect()->route('proprietaire.dashboard');
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
 }
