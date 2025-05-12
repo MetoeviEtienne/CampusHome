@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('logements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('proprietaire_id')->constrained('users');
+            $table->string('titre');
             $table->string('adresse');
             $table->enum('type', ['studio', 'appartement', 'chambre', 'colocation']);
             $table->integer('nombre_chambres');

@@ -1,0 +1,121 @@
+<?php
+
+namespace App\Http\Controllers\Proprietaire;
+
+use App\Http\Controllers\Controller;
+use App\Models\Logement;
+use Illuminate\Http\Request;
+use App\Models\PhotoLogement;
+
+class LogementController extends Controller
+{
+    public function index()
+    {
+        $logements = auth()->user()->logements()->with('photos')->get();
+        
+        return view('proprietaire.logements.index', compact('logements'));
+    }
+
+    public function create()
+    {
+        return view('proprietaire.logements.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'titre' => 'required|string|max:255',
+            'adresse' => 'required|string',
+            'type' => 'required|in:studio,appartement,chambre,colocation',
+            'nombre_chambres' => 'required|integer|min:1',
+            'superficie' => 'required|numeric|min:10',
+            'loyer' => 'required|numeric|min:0',
+            'charges' => 'nullable|numeric|min:0',
+            'description' => 'nullable|string',
+            'disponibilite' => 'required|date',
+            'photos.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+
+        $logement = auth()->user()->logements()->create($validated);
+
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $path = $photo->store('logements/photos', 'public');
+                $logement->photos()->create(['chemin' => $path]);
+            }
+        }
+
+        return redirect()->route('proprietaire.logements.index')->with('success', 'Logement créé avec succès! En attente de validation.');
+    }
+
+    // 
+    public function edit(Logement $logement)
+    {
+    if ($logement->proprietaire_id !== auth()->id()) {
+        abort(403, 'Accès non autorisé');
+    }
+
+    return view('proprietaire.logements.edit', compact('logement'));
+    }
+
+    // Mettre à jour un logement
+    public function update(Request $request, Logement $logement)
+    {
+    if ($logement->proprietaire_id !== auth()->id())
+     {
+        abort(403, 'Accès non autorisé');
+        }
+
+    $validated = $request->validate([
+        'titre' => 'required|string|max:255',
+        'adresse' => 'required|string',
+        'type' => 'required|in:studio,appartement,chambre,colocation',
+        'nombre_chambres' => 'required|integer|min:1',
+        'superficie' => 'required|numeric|min:10',
+        'loyer' => 'required|numeric|min:0',
+        'charges' => 'nullable|numeric|min:0',
+        'description' => 'nullable|string',
+        'disponibilite' => 'required|date',
+        'photos.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+    ]);
+
+    $logement->update($validated);
+
+    // Gestion des nouvelles photos
+    if ($request->hasFile('photos')) 
+        {
+        foreach ($logement->photos as $photo)
+         {
+            \Storage::disk('public')->delete($photo->chemin);
+            $photo->delete();
+            }
+
+        foreach ($request->file('photos') as $photo) 
+            {
+            $path = $photo->store('logements/photos', 'public');
+            $logement->photos()->create(['chemin' => $path]);
+            }
+        }
+
+        return redirect()->route('proprietaire.logements.index')->with('success', 'Logement mis à jour avec succès.');
+    }
+
+
+    // Supprimer un logement
+    public function destroy(Logement $logement)
+    {
+        if ($logement->proprietaire_id !== auth()->id()) {
+            abort(403, 'Accès non autorisé');
+        }
+    
+        foreach ($logement->photos as $photo) {
+            \Storage::disk('public')->delete($photo->chemin);
+            $photo->delete();
+        }
+    
+        $logement->delete();
+    
+        return redirect()->route('proprietaire.logements.index')->with('success', 'Logement supprimé.');
+    }
+    
+}

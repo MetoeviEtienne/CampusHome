@@ -29,16 +29,37 @@ class User extends Authenticatable
     ];
   
     public function isOwner()
-    {
-        return $this->role === 'owner';
-    }
+        {
+            return $this->role === 'owner';
+        }
     
     public function isStudent()
-    {
-        return $this->role === 'student';
-    }
+        {
+            return $this->role === 'student';
+        }
 
+    //logique de la publication de logement
 
+    public function logements()
+        {
+            return $this->hasMany(Logement::class, 'proprietaire_id');
+        }
+    //logique de la réservation de logement
+    public function reservations()
+        {
+            return $this->hasManyThrough(Reservation::class, Logement::class, 'proprietaire_id', 'logement_id');
+        }
+    
+    // Relation pour les messages envoyés par l'utilisateur
+    public function messagesEnvoyes()
+        {
+            return $this->hasMany(Message::class, 'expediteur_id');
+        }
+    // Relation pour les messages reçus par l'utilisateur
+    public function messagesRecus()
+        {
+            return $this->hasMany(Message::class, 'destinataire_id');
+        }
 
     /**
      * The attributes that should be hidden for serialization.
