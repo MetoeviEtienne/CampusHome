@@ -38,6 +38,11 @@ class DashboardController extends Controller
                                              ->orderBy('created_at', 'desc')
                                              ->take(5)
                                              ->get();
+    
+        // Récupérer les logements validés, en attente et non validés
+        $logementsValides = Logement::where('valide', true)->get();  // Logements validés
+        $logementsEnAttente = Logement::whereNull('valide')->get();  // Logements en attente (valide = null)
+        $logementsNonValidés = Logement::where('valide', false)->get();  // Logements non validés                                   
 
         // Passer les données à la vue
         return view('proprietaire.dashboard', [
@@ -45,6 +50,9 @@ class DashboardController extends Controller
             'reservationsEnAttente' => $reservationsEnAttente,
             'notifications' => $notifications,
             'notificationsMessages' => $notificationsMessages,
+            'logementsValides' => $logementsValides,
+            'logementsEnAttente' => $logementsNonValidés,
+            'logementsNonValidés' => $logementsEnAttente,
         ]);
     }
 }

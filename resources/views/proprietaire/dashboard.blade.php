@@ -8,10 +8,24 @@
 
     <!-- Résumé Statistique -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Logements validés -->
         <div class="bg-white p-5 rounded-lg shadow-md">
             <h3 class="text-sm text-gray-500">Logements publiés</h3>
-            <p class="text-3xl font-semibold text-blue-600">{{ $logements->where('valide', true)->count() }}</p>
+            <p class="text-3xl font-semibold text-blue-600">{{ $logementsValides->count() }}</p>
         </div>
+    
+        <!-- Logements en attente -->
+        <div class="bg-white p-5 rounded-lg shadow-md">
+            <h3 class="text-sm text-gray-500">Logements en attente</h3>
+            <p class="text-3xl font-semibold text-yellow-500">{{ $logementsEnAttente->count() }}</p>
+        </div>
+    
+        <!-- Logements non validés -->
+        <div class="bg-white p-5 rounded-lg shadow-md">
+            <h3 class="text-sm text-gray-500">Logements non validés</h3>
+            <p class="text-3xl font-semibold text-red-500">{{ $logementsNonValidés->count() }}</p>
+        </div>
+    </div>
         <div class="bg-white p-5 rounded-lg shadow-md">
             <h3 class="text-sm text-gray-500">Réservations en attente</h3>
             {{-- <p class="text-3xl font-semibold text-yellow-500">{{ $reservationsEnAttenteCount }}</p> --}}
