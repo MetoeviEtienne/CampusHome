@@ -13,7 +13,7 @@ class LogementController extends Controller
             ->latest()
             ->paginate(12);
 
-        return view('logements.index', compact('logements'));
+        return view('etudiants.logements.index', compact('logements'));
     }
 
     public function show(Logement $logement)
