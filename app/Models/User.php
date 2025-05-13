@@ -44,12 +44,18 @@ class User extends Authenticatable
         {
             return $this->hasMany(Logement::class, 'proprietaire_id');
         }
-    //logique de la réservation de logement
-    public function reservations()
+    // Réservations faites en tant qu'étudiant
+    public function reservationsEtudiant()
+        {
+            return $this->hasMany(\App\Models\Reservation::class, 'etudiant_id');
+        }
+
+    // Réservations reçues en tant que propriétaire (via les logements)
+    public function reservationsProprietaire()
         {
             return $this->hasManyThrough(Reservation::class, Logement::class, 'proprietaire_id', 'logement_id');
         }
-    
+
     // Relation pour les messages envoyés par l'utilisateur
     public function messagesEnvoyes()
         {
@@ -60,7 +66,13 @@ class User extends Authenticatable
         {
             return $this->hasMany(Message::class, 'destinataire_id');
         }
-
+    
+        // Relation pour les demandes de reservation
+    public function reservations()
+        {
+            return $this->hasMany(\App\Models\Reservation::class, 'etudiant_id');
+        }
+        
     /**
      * The attributes that should be hidden for serialization.
      *

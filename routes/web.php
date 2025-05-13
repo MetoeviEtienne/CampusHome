@@ -8,6 +8,15 @@ use App\Http\Controllers\Proprietaire\DashboardController;
 use App\Http\Controllers\Proprietaire\ReservationController;
 use App\Http\Controllers\Proprietaire\LogementController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Etudiant\LogementController as EtudiantLogementController;
+use App\Http\Controllers\Etudiant\ReservationController as EtudiantReservationController;
+use App\Http\Controllers\Etudiant\DashboardController as EtudiantDashboardController;
+use App\Http\Controllers\Proprietaire\AvisController;
+
+
+
+
 
 
 Route::get('/', function () {
@@ -27,19 +36,24 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 
-// Routes protégées par rôle
+ // Routes protégées par rôle
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Tableau de bord étudiant
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    // })->name('dashboard')->middleware('role:student');
-    })->name('dashboard');
+     // Tableau de bord étudiant
+     Route::get('/dashboard', function () {
+         return view('dashboard');
+     // })->name('dashboard')->middleware('role:student');
+     })->name('dashboard');
 
-    // Tableau de bord propriétaire
-    Route::get('/proprietaire/dashboard', function () {
-        return view('proprietaire.dashboard');
-    })->name('proprietaire.dashboard');
+     // Tableau de bord propriétaire
+Route::get('/proprietaire/dashboard', function () {
+         return view('proprietaire.dashboard');
+     })->name('proprietaire.dashboard');
 });
+
+
+// Route pour le tableau de bord du propriétaire
+Route::get('/proprietaire/dashboard', [DashboardController::class, 'index'])->name('proprietaire.dashboard');
+
 
 
 
@@ -87,4 +101,49 @@ Route::middleware(['auth'])->prefix('proprietaire')->group(function() {
     Route::post('/messages', [MessageController::class, 'store'])->name('proprietaire.messages.store'); // Envoyer un message
 });
 
-Route::get('/proprietaire/dashboard', [DashboardController::class, 'index'])->name('proprietaire.dashboard');
+
+// Routes pour l'étudiant
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [EtudiantDashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+    Route::get('/logements', [EtudiantLogementController::class, 'index'])->name('etudiant.logements.index');
+    Route::get('/logements/{logement}', [EtudiantLogementController::class, 'show'])->name('etudiant.logements.show');
+
+
+    Route::post('/logements/{logement}/reserver', [EtudiantReservationController::class, 'store'])->name('etudiant.reserver');
+    Route::get('/mes-reservations', [EtudiantReservationController::class, 'index'])->name('etudiant.reservations.index');
+    Route::get('/reservations/{reservation}/contrat', [EtudiantReservationController::class, 'contrat'])->name('etudiant.reservations.contrat');
+
+});
+Route::post('/reservations/{logement}', [App\Http\Controllers\Etudiant\ReservationController::class, 'store'])
+    ->name('etudiant.reservations.store')
+    ->middleware(['auth']); // S'assurer que l'étudiant est connecté
+
+
+//Déconnexion
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+     ->name('logout');
+
+     //Notifications
+Route::get('/notification/{id}/lire', function ($id) {
+        $notification = auth()->user()->notifications()->findOrFail($id);
+        $notification->markAsRead();
+    
+        return redirect()->back();
+        })->name('notifications.lire');
+
+// Route pour marquer toutes les demandes de maintenance comme lues      
+Route::prefix('proprietaire')->middleware('auth')->group(function () {
+     Route::get('/maintenances', [\App\Http\Controllers\Proprietaire\MaintenancesController::class, 'index'])->name('proprietaire.maintenances.index');
+    Route::patch('/maintenances/{maintenance}', [\App\Http\Controllers\Proprietaire\MaintenancesController::class, 'updateStatus'])->name('proprietaire.maintenances.update');
+    });
+  
+//Route pour marquer toutes les notifications comme lues
+Route::get('/proprietaire/notifications', [App\Http\Controllers\Proprietaire\NotificationController::class, 'index'])->name('proprietaire.notifications.index');
+Route::get('/proprietaire/notifications/lire/{id}', [App\Http\Controllers\Proprietaire\NotificationController::class, 'lire'])->name('notifications.lire');
+
+// Route pour la soumission d'un avis
+Route::post('avis/{reservation_id}', [AvisController::class, 'store'])->name('avis.store');
+// Route pour vérifier un avis
+Route::post('proprietaire/avis/{id}/verifier', [Proprietaire\DashboardController::class, 'verifierAvis'])->name('proprietaire.avis.verifier');
+// Route pour supprimer un avis
+Route::get('/proprietaire/avis', [AvisController::class, 'index'])->name('proprietaire.avis.index');

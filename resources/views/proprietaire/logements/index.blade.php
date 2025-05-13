@@ -36,7 +36,16 @@
                     <h3 class="font-semibold text-lg text-gray-800">{{ $logement->titre }}</h3>
                     <p class="text-sm text-gray-600">{{ $logement->adresse }}</p>
                     <p class="text-blue-600 font-semibold mt-2">{{ number_format($logement->loyer, 0, ',', ' ') }} FCFA/mois</p>
-
+                    <div class="mt-2 text-sm text-gray-600">
+                        <strong>Propriétaire :</strong> {{ $logement->proprietaire->name }}<br>
+                        <strong>Téléphone :</strong> {{ $logement->proprietaire->phone ?? 'Non renseigné' }}
+                    </div>
+                    
+                    <div class="mt-2 text-gray-700 text-sm">
+                        <strong>Description :</strong>
+                        <p>{{ $logement->description }}</p>
+                    </div>
+                    
                     <div class="mt-2">
                         @if($logement->valide)
                             <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Publié</span>

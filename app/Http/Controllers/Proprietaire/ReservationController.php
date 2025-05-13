@@ -47,15 +47,15 @@ class ReservationController extends Controller
         // Enregistrement du PDF dans storage/app/public/contrats/
         Storage::disk('public')->put($filename, $pdf->output());
 
-        // Enregistre le chemin du contrat si tu as une colonne "contrat_pdf" dans la table reservations
+        // Enregistre le chemin du contrat si tu as une colonne "contrat" dans la table reservations
         $reservation->update([
             'contrat' => $filename,
-]);
+        ]);
 
     }
 
     public function rejeter(Reservation $reservation)
-    {
+        {
         if ($reservation->logement->proprietaire_id !== auth()->id()) {
             abort(403);
         }

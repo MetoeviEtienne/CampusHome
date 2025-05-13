@@ -33,7 +33,7 @@ class Logement extends Model
         {
             return $this->hasMany(\App\Models\PhotoLogement::class);
         }
-    // Relation avec le modèle User
+    // Relation avec le propriétaire (users)
     public function proprietaire()
         {
             return $this->belongsTo(User::class, 'proprietaire_id');
@@ -43,8 +43,15 @@ class Logement extends Model
         {
             return $this->belongsTo(User::class);
         }
-        public function logements()
+    // Relation avec le logement
+    public function logements()
         {
             return $this->hasMany(Logement::class);
-        }        
+        }    
+    
+        // Relation avec les avis
+    public function avis()
+        {
+            return $this->hasMany(Avis::class);
+        }
 }
