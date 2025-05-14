@@ -20,7 +20,12 @@ class Logement extends Model
         'description',
         'disponibilite',
         'proprietaire_id',
+        'valide',
+        'validateur_id',
+        'etat',
+        'valide_le',
     ];
+    
 
     // Relation avec le modèle User
     public function reservations()
@@ -38,16 +43,22 @@ class Logement extends Model
         {
             return $this->belongsTo(User::class, 'proprietaire_id');
         } 
-    // Relation avec le modèle User
-    public function user()
+
+    public function validateur()
         {
-            return $this->belongsTo(User::class);
+            return $this->belongsTo(User::class, 'validateur_id');
         }
+            
+    // // Relation avec le modèle User
+    // public function user()
+    //     {
+    //         return $this->belongsTo(User::class);
+    //     }
     // Relation avec le logement
-    public function logements()
-        {
-            return $this->hasMany(Logement::class);
-        }    
+    // public function logements()
+    //     {
+    //         return $this->hasMany(Logement::class);
+    //     }    
     
         // Relation avec les avis
     public function avis()

@@ -13,6 +13,10 @@ use App\Http\Controllers\Etudiant\LogementController as EtudiantLogementControll
 use App\Http\Controllers\Etudiant\ReservationController as EtudiantReservationController;
 use App\Http\Controllers\Etudiant\DashboardController as EtudiantDashboardController;
 use App\Http\Controllers\Proprietaire\AvisController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\ValidationLogementController;
+
 
 
 
@@ -114,9 +118,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reservations/{reservation}/contrat', [EtudiantReservationController::class, 'contrat'])->name('etudiant.reservations.contrat');
 
 });
-Route::post('/reservations/{logement}', [App\Http\Controllers\Etudiant\ReservationController::class, 'store'])
+// Route::post('/reservations/{logement}', [App\Http\Controllers\Etudiant\ReservationController::class, 'store'])
+//     ->name('etudiant.reservations.store')
+//     ->middleware(['auth']); // S'assurer que l'étudiant est connecté
+// Afficher le formulaire de réservation
+Route::get('/logements/{logement}/reserver', [ReservationController::class, 'create'])
+    ->name('etudiant.logements.reserver')
+    ->middleware(['auth']);
+
+// Soumettre le formulaire (POST)
+Route::post('/reservations/{logement}', [ReservationController::class, 'store'])
     ->name('etudiant.reservations.store')
-    ->middleware(['auth']); // S'assurer que l'étudiant est connecté
+    ->middleware(['auth']);
+
 
 
 //Déconnexion
@@ -147,3 +161,49 @@ Route::post('avis/{reservation_id}', [AvisController::class, 'store'])->name('av
 Route::post('proprietaire/avis/{id}/verifier', [Proprietaire\DashboardController::class, 'verifierAvis'])->name('proprietaire.avis.verifier');
 // Route pour supprimer un avis
 Route::get('/proprietaire/avis', [AvisController::class, 'index'])->name('proprietaire.avis.index');
+
+
+// Gestion des utilisateurs par l'administrateur
+Route::prefix('admin')->group(function () {
+    Route::get('/utilisateurs', [UserController::class, 'index'])->name('admin.users.index');
+    Route::get('/utilisateurs/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/utilisateurs/{user}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/utilisateurs/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+});
+
+// Route pour la gestion des administrateurs
+Route::prefix('admin')->middleware('auth:admin')->group(function () {
+    Route::get('/admins', [AdminController::class, 'index'])->name('admin.admins.index');
+    Route::get('/admins/create', [AdminController::class, 'create'])->name('admin.admins.create');
+    Route::post('/admins', [AdminController::class, 'store'])->name('admin.admins.store');
+    Route::get('/admins/{admin}/edit', [AdminController::class, 'edit'])->name('admin.admins.edit');
+    Route::put('/admins/{admin}', [AdminController::class, 'update'])->name('admin.admins.update');
+    Route::delete('/admins/{admin}', [AdminController::class, 'destroy'])->name('admin.admins.destroy');
+});
+
+// Route pour la gestion des logements à valider
+Route::prefix('admin')->middleware('auth:admin')->group(function () {
+    Route::get('/logements-a-valider', [ValidationLogementController::class, 'index'])->name('admin.logements.index');
+    Route::post('/logements/{logement}/valider', [ValidationLogementController::class, 'valider'])->name('admin.logements.valider');
+    // Route pour rejeter un logement
+    Route::post('/logements/{logement}/rejeter', [ValidationLogementController::class, 'rejeter'])->name('admin.logements.rejecter');
+});
+
+// Route pour afficher l'historique des logements validés
+Route::get('/admin/logements/historique', [ValidationLogementController::class, 'historique'])->name('admin.logements.historique');
+
+// Routes pour la gestion des maintenances
+// Route pour afficher la liste des demandes de maintenance
+// Route pour mettre à jour le statut d'une demande de maintenance
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    Route::get('maintenances', [\App\Http\Controllers\Admin\MaintenanceController::class, 'index'])->name('maintenances.index');
+    Route::patch('maintenances/{maintenance}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'updateStatus'])->name('maintenances.update');
+});
+
+// Route pour afficher les avis
+// Route pour vérifier un avis
+// Route pour supprimer un avis
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    Route::get('avis', [\App\Http\Controllers\Admin\AvisController::class, 'index'])->name('avis.index');
+    Route::patch('avis/{avis}/verifier', [\App\Http\Controllers\Admin\AvisController::class, 'verifier'])->name('avis.verifier');
+});

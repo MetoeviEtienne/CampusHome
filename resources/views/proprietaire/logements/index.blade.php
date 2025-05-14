@@ -48,24 +48,24 @@
                     
                     <div class="mt-2">
                         @if($logement->valide)
-                            <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Publié</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Publié</span>
+                        @elseif($logement->etat === 'rejeté')
+                            <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">Rejeté</span>
                         @else
-                            <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">En attente</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">En attente</span>
                         @endif
                     </div>
-
-                    <div class="mt-4 flex justify-between items-center text-sm">
-                        <a href="{{ route('proprietaire.logements.edit', $logement) }}" class="text-blue-500 hover:text-blue-700 font-medium transition duration-300">Modifier</a>
-
+                    <div class="mt-4 flex justify-between text-sm text-blue-500">
+                        <a href="{{ route('proprietaire.logements.edit', $logement) }}" class="hover:underline">Modifier</a>
                         <form action="{{ route('proprietaire.logements.destroy', $logement) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:text-red-700 font-medium transition duration-300">Supprimer</button>
+                            <button type="submit" class="text-red-500 hover:underline">Supprimer</button>
                         </form>
                     </div>
                 </div>
             </div>
-        @endforeach
-    </div>
+            @endforeach
+        </div>
 @endif
 @endsection

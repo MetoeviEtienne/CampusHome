@@ -27,11 +27,11 @@ class ReservationController extends Controller
                     });
             })
             ->exists();
-        if ($reservationExistante) {
-            return back()->with('error', 'Vous avez déjà réservé ce logement pour une période qui se chevauche.');
-        }
+                if ($reservationExistante) {
+                    return back()->with('error', 'Vous avez déjà réservé ce logement pour une période qui se chevauche.');
+                }
 
-
+        // ✅ 3. Vérifier si le logement est déjà réservé pour la période demandée
         $reservation = Reservation::create([
             'etudiant_id' => auth()->id(),
             'logement_id' => $logement->id,
@@ -44,12 +44,14 @@ class ReservationController extends Controller
                          ->with('success', 'Demande envoyée avec succès.');
     }
 
+    // Route pour afficher les réservations de l'étudiant
     public function index()
     {
         $reservations = auth()->user()->reservations()->with('logement')->latest()->get();
         return view('etudiants.reservations.index', compact('reservations'));
     }
 
+    // Route pour le téléchargement du contrat
     public function contrat(Reservation $reservation)
     {
         abort_unless($reservation->etudiant_id === auth()->id(), 403);
@@ -60,4 +62,12 @@ class ReservationController extends Controller
 
         return response()->file(storage_path("app/public/{$reservation->contrat}"));
     }
+
+    // Affiche le formulaire de réservation d’un logement spécifique
+    public function create(Logement $logement)
+        {
+            return view('etudiant.reservations.create', compact('logement'));
+        }
+
+    
 }

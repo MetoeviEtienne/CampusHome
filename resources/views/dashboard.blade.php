@@ -10,16 +10,43 @@
         @forelse($logements as $logement)
             <div class="bg-white rounded shadow overflow-hidden">
                 @if($logement->photos->isNotEmpty())
-                    <img src="{{ asset('storage/' . $logement->photos->first()->chemin) }}" alt="Photo" class="h-48 w-full object-cover">
+                    <div class="grid grid-cols-3 gap-1 p-2 bg-gray-100">
+                        @foreach($logement->photos as $photo)
+                            <a href="{{ asset('storage/' . $photo->chemin) }}" target="_blank">
+                                <img src="{{ asset('storage/' . $photo->chemin) }}" alt="Photo" class="h-24 w-full object-cover rounded hover:opacity-80 transition duration-200">
+                            </a>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+                        Aucune image disponible
+                    </div>
                 @endif
                 <div class="p-4">
                     <h2 class="text-lg font-semibold">{{ $logement->adresse }}</h2>
                     <p class="text-sm text-gray-600">{{ ucfirst($logement->type) }} - {{ $logement->superficie }} m²</p>
                     <p class="text-blue-600 font-bold mt-2">{{ number_format($logement->loyer, 0, ',', ' ') }} FCFA/mois</p>
-                    <a href="{{ route('etudiant.logements.show', $logement) }}"
-                       class="inline-block mt-3 text-sm text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
-                        Voir détails
-                    </a>
+                    <div class="mt-3 flex space-x-3">
+                        <a href="{{ route('etudiant.logements.show', $logement) }}"
+                           class="text-sm text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
+                            Voir détails
+                        </a>
+                        {{--  <a href="{{ route('etudiant.logements.avis', $logement) }}" --}}
+                        <a href="#"
+                           class="text-sm text-white bg-gray-600 px-4 py-2 rounded hover:bg-gray-700">
+                            Avis
+                        </a>
+                        {{--   <a href="{{ route('etudiant.logements.reserver', $logement) }}" --}}
+                         <a href="#"
+                           class="text-sm text-white bg-green-600 px-4 py-2 rounded hover:bg-green-700">
+                            Réserver
+                        </a>
+                        {{-- <a href="{{ route('etudiant.logements.discuter', $logement) }}" --}}
+                        <a href="#"
+                           class="text-sm text-white bg-yellow-600 px-4 py-2 rounded hover:bg-yellow-700">
+                            Discuter
+                        </a>
+                    </div>
                 </div>
             </div>
         @empty

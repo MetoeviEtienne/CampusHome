@@ -88,9 +88,13 @@
                 </div>
                 
                 <div class="mt-2">
-                    <span class="text-xs {{ $logement->valide ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }} px-2 py-1 rounded-full">
-                        {{ $logement->valide ? 'Publié' : 'En attente' }}
-                    </span>
+                    @if($logement->valide)
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Publié</span>
+                    @elseif($logement->etat === 'rejeté')
+                        <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">Rejeté</span>
+                    @else
+                        <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">En attente</span>
+                    @endif
                 </div>
                 <div class="mt-4 flex justify-between text-sm text-blue-500">
                     <a href="{{ route('proprietaire.logements.edit', $logement) }}" class="hover:underline">Modifier</a>

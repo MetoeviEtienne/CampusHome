@@ -28,18 +28,22 @@
       <!-- Logements à valider -->
       <div class="bg-white p-4 rounded-2xl shadow">
         <h2 class="text-lg font-semibold mb-2">Logements à valider</h2>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        <a href="{{ route('admin.logements.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
           Voir les logements
-        </button>
+        </a>
+      
       </div>
 
       <!-- Gestion des utilisateurs -->
       <div class="bg-white p-4 rounded-2xl shadow">
         <h2 class="text-lg font-semibold mb-2">Utilisateurs</h2>
-        <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-          Gérer étudiants & propriétaires
-        </button>
+        <a href="{{ route('admin.users.index') }}">
+          <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            Gérer étudiants & propriétaires
+          </button>
+        </a>
       </div>
+
 
       <!-- Paiements -->
       <div class="bg-white p-4 rounded-2xl shadow">
@@ -57,22 +61,25 @@
         </button>
       </div>
 
-      <!-- Signalements -->
-      <div class="bg-white p-4 rounded-2xl shadow">
-        <h2 class="text-lg font-semibold mb-2">Signalements</h2>
-        <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-          Voir les problèmes signalés
-        </button>
-      </div>
+     <!-- Signalements de maintenance -->
+    <div class="bg-white p-4 rounded-2xl shadow">
+      <h2 class="text-lg font-semibold mb-2">Signalements de maintenance</h2>
+      <a href="{{ route('admin.maintenances.index') }}">
+          <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+              Voir les problèmes signalés
+          </button>
+      </a>
+    </div>
 
       <!-- Avis -->
       <div class="bg-white p-4 rounded-2xl shadow">
         <h2 class="text-lg font-semibold mb-2">Avis étudiants</h2>
-        <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
-          Lire les avis
-        </button>
+        <a href="{{ route('admin.avis.index') }}">
+            <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                Lire les avis
+            </button>
+        </a>
       </div>
-
     </div>
   </div>
 </body>

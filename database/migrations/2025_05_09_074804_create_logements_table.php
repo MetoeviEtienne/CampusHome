@@ -26,6 +26,7 @@ return new class extends Migration
             $table->boolean('valide')->default(false);
             $table->foreignId('validateur_id')->nullable()->constrained('users');
             $table->timestamp('valide_le')->nullable();
+             $table->enum('etat', ['valide', 'rejeté'])->default('valide'); // Ajouter la colonne etat
             $table->timestamps();
         });
     }

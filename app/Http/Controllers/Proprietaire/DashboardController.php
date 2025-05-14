@@ -45,10 +45,22 @@ class DashboardController extends Controller
         $notificationsMessages = $user->notifications()->latest()->take(5)->get();
 
         // Logements classés
-        $logementsValides = Logement::where('proprietaire_id', $user->id)->where('valide', true)->get();
-        $logementsEnAttente = Logement::where('proprietaire_id', $user->id)->where('valide', false)->get();
-        $logementsNonValidés = Logement::where('proprietaire_id', $user->id)->where('valide')->get();
+        // $logementsValides = Logement::where('proprietaire_id', $user->id)->where('valide', true)->get();
+        // $logementsEnAttente = Logement::where('proprietaire_id', $user->id)->where('valide', false)->get();
+        // $logementsNonValidés = Logement::where('proprietaire_id', $user->id)->where('valide')->get();
+        $logementsValides = Logement::where('proprietaire_id', $user->id)
+            ->where('valide', true)
+            ->get();
+            $logementsEnAttente = Logement::where('proprietaire_id', $user->id)
+            ->where('valide', false)
+            ->where('etat', 'valide') // En attente de validation
+            ->get();
         
+        $logementsNonValidés = Logement::where('proprietaire_id', $user->id)
+            ->where('valide', false)
+            ->where('etat', 'rejeté') // Rejetés
+            ->get();
+
         // Récupérer les avis sur les logements
         $avis = Avis::whereIn('logement_id', $logements->pluck('id'))->get();
 
