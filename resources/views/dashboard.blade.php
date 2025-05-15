@@ -56,6 +56,8 @@
 
     <div class="mt-6">
         {{ $logements->links() }}
+        {{-- {{ $logements->appends(['search' => request('search')])->links() }} --}}
+
     </div>
 </div>
 @endsection

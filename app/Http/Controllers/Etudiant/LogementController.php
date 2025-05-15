@@ -3,22 +3,29 @@ namespace App\Http\Controllers\Etudiant;
 
 use App\Http\Controllers\Controller;
 use App\Models\Logement;
+use Illuminate\Http\Request;
 
 class LogementController extends Controller
 {
-    public function index()
-    {
-        $logements = Logement::where('valide', true)
-            ->with('photos', 'proprietaire')
-            ->latest()
-            ->paginate(12);
+    public function index(Request $request)
+{
+    $query = \App\Models\Logement::where('valide', true);
 
-        return view('etudiants.logements.index', compact('logements'));
+    if ($request->filled('search')) {
+        $search = $request->search;
+
+        $query->where(function ($q) use ($search) {
+            $q->where('adresse', 'like', "%$search%");
+            
+            if (is_numeric($search)) {
+                $q->orWhere('loyer', $search);
+            }
+        });
     }
 
-    public function show(Logement $logement)
-    {
-        abort_unless($logement->valide, 404);
-        return view('logements.show', compact('logement'));
-    }
+    $logements = $query->latest()->paginate(10);
+
+    return view('/dashboard', compact('logements'));
+}
+
 }
