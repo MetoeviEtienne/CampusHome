@@ -9,6 +9,7 @@ use App\Models\PhotoLogement;
 
 class LogementController extends Controller
 {
+    // Afficher la liste des logements
     public function index()
     {
         $logements = auth()->user()->logements()->with('photos')->get();
@@ -16,11 +17,12 @@ class LogementController extends Controller
         return view('proprietaire.logements.index', compact('logements'));
     }
 
+    // creer un logement
     public function create()
     {
         return view('proprietaire.logements.create');
     }
-
+    // Enregistrer un nouveau logement
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -48,7 +50,7 @@ class LogementController extends Controller
         return redirect()->route('proprietaire.logements.index')->with('success', 'Logement créé avec succès! En attente de validation.');
     }
 
-    // 
+    // Editer un logement
     public function edit(Logement $logement)
     {
     if ($logement->proprietaire_id !== auth()->id()) {
@@ -117,5 +119,13 @@ class LogementController extends Controller
     
         return redirect()->route('proprietaire.logements.index')->with('success', 'Logement supprimé.');
     }
-    
+
+    // Afficher les détails d'un logement
+    public function show($id)
+        {
+            $logement = Logement::with(['photos', 'proprietaire'])->findOrFail($id);
+
+            return view('etudiants.logements.show', compact('logement'));
+        }
+
 }

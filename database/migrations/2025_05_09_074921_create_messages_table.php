@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('expediteur_id')->constrained('users');
             $table->foreignId('destinataire_id')->constrained('users');
-            $table->foreignId('reservation_id')->nullable()->constrained('reservations');
+            // $table->foreignId('reservation_id')->nullable()->constrained('reservations');
             $table->text('contenu');
             $table->boolean('lu')->default(false);
             $table->timestamps();

@@ -73,6 +73,13 @@ class User extends Authenticatable
             return $this->hasMany(\App\Models\Reservation::class, 'etudiant_id');
         }
         
+    // Relatio pour les avis laissés par l'utilisateur
+    public function avis()
+        {
+            return $this->hasMany(Avis::class, 'auteur_id');
+        }
+
+        
     /**
      * The attributes that should be hidden for serialization.
      *

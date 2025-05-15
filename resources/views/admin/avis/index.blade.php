@@ -17,7 +17,7 @@
                     <th class="py-3">Logement</th>
                     <th class="py-3">Propriétaire</th>
                     <th class="py-3">Auteur</th>
-                    <th class="py-3">Note</th>
+                    {{-- <th class="py-3">Note</th> --}}
                     <th class="py-3">Commentaire</th>
                     <th class="py-3">Statut</th>
                     <th class="py-3">Action</th>
@@ -29,7 +29,7 @@
                         <td class="py-2">{{ $item->logement->titre ?? 'N/A' }}</td>
                         <td class="py-2">{{ $item->logement->proprietaire->name ?? 'N/A' }}</td>
                         <td class="py-2">{{ $item->auteur->name }}</td>
-                        <td class="py-2">{{ $item->note }}/5</td>
+                        {{-- <td class="py-2">{{ $item->note }}/5</td> --}}
                         <td class="py-2">{{ $item->commentaire }}</td>
                         <td class="py-2">
                             @if($item->verifie)

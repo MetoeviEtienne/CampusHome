@@ -31,21 +31,21 @@
                            class="text-sm text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-700">
                             Voir détails
                         </a>
-                        {{--  <a href="{{ route('etudiant.logements.avis', $logement) }}" --}}
-                        <a href="#"
-                           class="text-sm text-white bg-gray-600 px-4 py-2 rounded hover:bg-gray-700">
-                            Avis
+                        <a href="{{ route('etudiant.logements.avis', $logement->id) }}"
+                            class="text-sm text-white bg-gray-600 px-4 py-2 rounded hover:bg-gray-700">
+                            Donner un avis
                         </a>
-                        {{--   <a href="{{ route('etudiant.logements.reserver', $logement) }}" --}}
-                         <a href="#"
-                           class="text-sm text-white bg-green-600 px-4 py-2 rounded hover:bg-green-700">
+                        {{-- <a href="{{ route('etudiant.reservations.create', $logement) }}"
+                            class="text-sm text-white bg-green-600 px-4 py-2 rounded hover:bg-green-700">
                             Réserver
-                        </a>
-                        {{-- <a href="{{ route('etudiant.logements.discuter', $logement) }}" --}}
-                        <a href="#"
-                           class="text-sm text-white bg-yellow-600 px-4 py-2 rounded hover:bg-yellow-700">
-                            Discuter
-                        </a>
+                        </a> --}}
+                        
+                        <a href="{{ route('etudiants.messages.conversation', ['proprietaireId' => $logement->proprietaire_id]) }}" 
+    class="inline-block text-sm text-white bg-yellow-600 px-4 py-2 rounded hover:bg-yellow-700 transition-colors duration-200">
+    Discuter
+</a>
+
+
                     </div>
                 </div>
             </div>

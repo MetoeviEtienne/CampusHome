@@ -12,10 +12,11 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Etudiant\LogementController as EtudiantLogementController;
 use App\Http\Controllers\Etudiant\ReservationController as EtudiantReservationController;
 use App\Http\Controllers\Etudiant\DashboardController as EtudiantDashboardController;
-use App\Http\Controllers\Proprietaire\AvisController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\ValidationLogementController;
+use App\Http\Controllers\Proprietaire\AvisController as ProprietaireAvisController;
+use App\Http\Controllers\AvisController as EtudiantAvisController;
 
 
 
@@ -110,26 +111,32 @@ Route::middleware(['auth'])->prefix('proprietaire')->group(function() {
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [EtudiantDashboardController::class, 'index'])->middleware('auth')->name('dashboard');
     Route::get('/logements', [EtudiantLogementController::class, 'index'])->name('etudiant.logements.index');
-    Route::get('/logements/{logement}', [EtudiantLogementController::class, 'show'])->name('etudiant.logements.show');
-
+    // Route::get('/logements/{logement}', [EtudiantLogementController::class, 'show'])->name('etudiant.logements.show');
+    
+    Route::get('/proprietaire/messages', [MessageController::class, 'proprietaireIndex'])->name('proprietaire.messages');
+    Route::get('/etudiant/messages', [MessageController::class, 'etudiantIndex'])->name('etudiants.messages');
+    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
 
     Route::post('/logements/{logement}/reserver', [EtudiantReservationController::class, 'store'])->name('etudiant.reserver');
     Route::get('/mes-reservations', [EtudiantReservationController::class, 'index'])->name('etudiant.reservations.index');
     Route::get('/reservations/{reservation}/contrat', [EtudiantReservationController::class, 'contrat'])->name('etudiant.reservations.contrat');
 
 });
-// Route::post('/reservations/{logement}', [App\Http\Controllers\Etudiant\ReservationController::class, 'store'])
-//     ->name('etudiant.reservations.store')
-//     ->middleware(['auth']); // S'assurer que l'étudiant est connecté
-// Afficher le formulaire de réservation
-Route::get('/logements/{logement}/reserver', [ReservationController::class, 'create'])
-    ->name('etudiant.logements.reserver')
-    ->middleware(['auth']);
+Route::get('/etudiant/messages/{proprietaireId}', [MessageController::class, 'conversation'])->name('etudiants.messages.conversation');
+Route::get('/proprietaire/messages/{etudiantId}', [MessageController::class, 'conversationEtudiant'])->name('proprietaire.messages.conversation');
 
-// Soumettre le formulaire (POST)
-Route::post('/reservations/{logement}', [ReservationController::class, 'store'])
-    ->name('etudiant.reservations.store')
-    ->middleware(['auth']);
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/proprietaire/messages', [MessageController::class, 'proprietaireIndex'])->name('proprietaire.messages');
+//     Route::get('/etudiant/messages', [MessageController::class, 'etudiantIndex'])->name('etudiant.messages');
+
+//     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+// });
+// Route pour la discussion entre le propriétaire et l'étudiant
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/conversation/{id}', [MessageController::class, 'conversation'])->name('messages.conversation');
+//     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+// });
 
 
 
@@ -155,12 +162,12 @@ Route::prefix('proprietaire')->middleware('auth')->group(function () {
 Route::get('/proprietaire/notifications', [App\Http\Controllers\Proprietaire\NotificationController::class, 'index'])->name('proprietaire.notifications.index');
 Route::get('/proprietaire/notifications/lire/{id}', [App\Http\Controllers\Proprietaire\NotificationController::class, 'lire'])->name('notifications.lire');
 
-// Route pour la soumission d'un avis
-Route::post('avis/{reservation_id}', [AvisController::class, 'store'])->name('avis.store');
-// Route pour vérifier un avis
-Route::post('proprietaire/avis/{id}/verifier', [Proprietaire\DashboardController::class, 'verifierAvis'])->name('proprietaire.avis.verifier');
-// Route pour supprimer un avis
-Route::get('/proprietaire/avis', [AvisController::class, 'index'])->name('proprietaire.avis.index');
+// // Route pour la soumission d'un avis
+// Route::post('avis/{reservation_id}', [AvisController::class, 'store'])->name('avis.store');
+// // Route pour vérifier un avis
+// Route::post('proprietaire/avis/{id}/verifier', [Proprietaire\DashboardController::class, 'verifierAvis'])->name('proprietaire.avis.verifier');
+// // Route pour supprimer un avis
+// Route::get('/proprietaire/avis', [AvisController::class, 'index'])->name('proprietaire.avis.index');
 
 
 // Gestion des utilisateurs par l'administrateur
@@ -207,3 +214,20 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('avis', [\App\Http\Controllers\Admin\AvisController::class, 'index'])->name('avis.index');
     Route::patch('avis/{avis}/verifier', [\App\Http\Controllers\Admin\AvisController::class, 'verifier'])->name('avis.verifier');
 });
+
+
+// Routes pour les propriétaires
+Route::prefix('proprietaire')->name('proprietaire.')->group(function () {
+    Route::get('/avis', [ProprietaireAvisController::class, 'index'])->name('avis.index');
+    // autres routes propriétaire
+});
+
+// Routes pour les étudiants
+Route::prefix('etudiant')->name('etudiant.')->group(function () {
+    Route::get('/logements/{logement}/avis', [EtudiantAvisController::class, 'showForm'])->name('logements.avis');
+    Route::post('/logements/{logement}/avis', [EtudiantAvisController::class, 'store'])->name('logements.avis.store');
+    // autres routes étudiant
+});
+
+// Route pour afficher le detail d'un logement
+Route::get('/etudiant/logements/{logement}', [LogementController::class, 'show'])->name('etudiant.logements.show');

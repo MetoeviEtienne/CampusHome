@@ -60,7 +60,7 @@ class Logement extends Model
     //         return $this->hasMany(Logement::class);
     //     }    
     
-        // Relation avec les avis
+    // Relation avec le modèle Avis
     public function avis()
         {
             return $this->hasMany(Avis::class);

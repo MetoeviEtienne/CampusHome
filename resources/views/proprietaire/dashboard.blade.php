@@ -109,22 +109,23 @@
         @endforeach
     </div>
 
-   <!-- Section Avis -->
-    <div class="mt-10 bg-white p-6 rounded-lg shadow">
-        <h4 class="text-lg font-semibold text-gray-800 mb-4">Avis sur mes logements</h4>
-        @foreach($avis as $avis)
-            <div class="avis mb-4 p-4 border-b">
-                <p><strong>{{ $avis->auteur->name }}</strong> a donné une note de {{ $avis->note }}.</p>
-                <p>{{ $avis->commentaire }}</p>
-                <p>Réservé le : {{ $avis->reservation->created_at->format('d-m-Y') }}</p>
-                <p>Status : {{ $avis->verifie ? 'Vérifié' : 'Non vérifié' }}</p>
-            </div>
-        @endforeach
+  <div class="mt-10 bg-white p-6 rounded-lg shadow">
+    <h4 class="text-lg font-semibold text-gray-800 mb-4">Avis sur mes logements</h4>
+    @foreach($avis as $item)
+        <div class="avis mb-4 p-4 border-b border-gray-300">
+            <p>
+                <strong>{{ $item->auteur->name }}</strong> — 
+                <span class="text-gray-500 text-sm">{{ $item->created_at->format('d/m/Y à H:i') }}</span>  
+                — Note : <span class="font-semibold">{{ $item->note }}</span>
+            </p>
+            <p class="mt-1">{{ $item->commentaire }}</p>
+        </div>
+    @endforeach
 
-        @if($avis->isEmpty())
-            <p>Aucun avis pour l’instant.</p>
-        @endif
-    </div>
+    @if($avis->isEmpty())
+        <p>Aucun avis pour l’instant.</p>
+    @endif
+</div>
 
     <!-- Notifications et maintenance -->
     <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
