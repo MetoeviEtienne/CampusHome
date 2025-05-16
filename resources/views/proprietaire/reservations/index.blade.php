@@ -22,18 +22,27 @@
                     </p>
                 </div>
 
-                @if ($reservation->statut === 'en_attente')
-                <div class="flex gap-2">
-                    <form method="POST" action="{{ route('proprietaire.reservations.approve', $reservation) }}">
+                <div class="flex gap-2 items-center">
+                    @if ($reservation->statut === 'en_attente')
+                        <form method="POST" action="{{ route('proprietaire.reservations.approve', $reservation) }}">
+                            @csrf
+                            <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">Approuver</button>
+                        </form>
+                        <form method="POST" action="{{ route('proprietaire.reservations.reject', $reservation) }}">
+                            @csrf
+                            <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Rejeter</button>
+                        </form>
+                    @endif
+
+                    <!-- Bouton de suppression visible pour toutes les réservations -->
+                    <form method="POST" action="{{ route('proprietaire.reservations.destroy', $reservation) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
                         @csrf
-                        <button type="submit" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">Approuver</button>
-                    </form>
-                    <form method="POST" action="{{ route('proprietaire.reservations.reject', $reservation) }}">
-                        @csrf
-                        <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Rejeter</button>
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-gray-600">
+                            Supprimer
+                        </button>
                     </form>
                 </div>
-                @endif
             </div>
         @endforeach
     </div>

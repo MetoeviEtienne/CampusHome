@@ -8,13 +8,17 @@ use App\Notifications\ReservationApproved;
 use App\Notifications\ReservationRejected;
 use PDF;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
     public function index()
     {
-        $reservations = auth()->user()->reservations()
+        // Récupère les logements du propriétaire
+        $logementIds = auth()->user()->logements()->pluck('id');
+
+        // Récupère les réservations associées à ces logements
+        $reservations = Reservation::whereIn('logement_id', $logementIds)
             ->with(['logement', 'etudiant'])
             ->latest()
             ->paginate(10);
@@ -28,34 +32,35 @@ class ReservationController extends Controller
             abort(403);
         }
 
+        // Vérifier s'il existe déjà une réservation approuvée sur la même période et logement
+        $overlapping = Reservation::where('logement_id', $reservation->logement_id)
+            ->where('statut', 'approuvee')
+            ->where(function ($query) use ($reservation) {
+                $query->whereBetween('date_debut', [$reservation->date_debut, $reservation->date_fin])
+                      ->orWhereBetween('date_fin', [$reservation->date_debut, $reservation->date_fin])
+                      ->orWhere(function ($q) use ($reservation) {
+                          $q->where('date_debut', '<=', $reservation->date_debut)
+                            ->where('date_fin', '>=', $reservation->date_fin);
+                      });
+            })
+            ->exists();
+
+        if ($overlapping) {
+            return back()->with('error', 'Ce logement est déjà réservé pour cette période.');
+        }
+
         $reservation->update(['statut' => 'approuvee']);
 
         // Notification
         $reservation->etudiant->notify(new ReservationApproved($reservation));
 
-        // TODO : génération automatique du contrat
+        // TODO : génération automatique du contrat PDF (à faire ici si besoin)
 
         return back()->with('success', 'Réservation approuvée avec succès.');
-
-        // Génération du contrat PDF
-        $pdf = PDF::loadView('contrats.contrat', [
-            'reservation' => $reservation,
-        ]);
-
-        $filename = 'contrats/contrat_reservation_' . $reservation->id . '.pdf';
-
-        // Enregistrement du PDF dans storage/app/public/contrats/
-        Storage::disk('public')->put($filename, $pdf->output());
-
-        // Enregistre le chemin du contrat si tu as une colonne "contrat" dans la table reservations
-        $reservation->update([
-            'contrat' => $filename,
-        ]);
-
     }
 
     public function rejeter(Reservation $reservation)
-        {
+    {
         if ($reservation->logement->proprietaire_id !== auth()->id()) {
             abort(403);
         }
@@ -66,5 +71,17 @@ class ReservationController extends Controller
         $reservation->etudiant->notify(new ReservationRejected($reservation));
 
         return back()->with('success', 'Réservation rejetée.');
+    }
+
+    public function destroy(Reservation $reservation)
+    {
+        // Vérifie que le logement appartient au propriétaire connecté
+        if ($reservation->logement->proprietaire_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $reservation->delete();
+
+        return redirect()->back()->with('success', 'Réservation supprimée avec succès.');
     }
 }

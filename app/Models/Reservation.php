@@ -7,8 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     // Propriétés assignables
-    protected $fillable = [
-        'logement_id', 'etudiant_id', 'date_debut', 'date_fin', 'statut', 'contrat', 'contrat_signe'
+   protected $fillable = [
+        'etudiant_id',
+        'logement_id',
+        'date_debut',
+        'date_fin',
+        'statut',
+        'contrat',
+        'contrat_signe',
     ];
 
     // Relation avec le logement
@@ -22,5 +28,11 @@ class Reservation extends Model
         {
             return $this->belongsTo(\App\Models\User::class, 'etudiant_id');
         }
+        // Relation pour les réservations
+    public function reservations()
+        {
+            return $this->hasMany(\App\Models\Reservation::class, 'etudiant_id');
+        }
+
 
 }

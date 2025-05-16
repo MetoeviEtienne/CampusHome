@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('statut', ['en_attente', 'approuvée', 'rejetée', 'annulée']);
             $table->text('contrat')->nullable(); // Chemin vers le contrat généré
             $table->boolean('contrat_signe')->default(false);
-            $table->unique(['logement_id', 'etudiant_id']);
+            // $table->unique(['logement_id', 'etudiant_id']);
             $table->timestamps();
         });
     }

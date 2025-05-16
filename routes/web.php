@@ -21,9 +21,6 @@ use App\Http\Controllers\AvisController as EtudiantAvisController;
 
 
 
-
-
-
 Route::get('/', function () {
     return view('campushome');
 });
@@ -107,6 +104,10 @@ Route::middleware(['auth'])->prefix('proprietaire')->group(function() {
 });
 
 
+Route::get('/etudiant/logements/{logement}/reservation', [ReservationController::class, 'create'])
+    ->name('etudiant.reservations.create')
+    ->middleware('auth:etudiant');
+
 // Routes pour l'étudiant
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [EtudiantDashboardController::class, 'index'])->middleware('auth')->name('dashboard');
@@ -116,29 +117,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/proprietaire/messages', [MessageController::class, 'proprietaireIndex'])->name('proprietaire.messages');
     Route::get('/etudiant/messages', [MessageController::class, 'etudiantIndex'])->name('etudiants.messages');
     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+    // Route::get('/etudiant/logements/{logement}', [EtudiantLogementController::class, 'show'])->name('etudiant.logements.show');
 
-    Route::post('/logements/{logement}/reserver', [EtudiantReservationController::class, 'store'])->name('etudiant.reserver');
+    // Route::post('/logements/{logement}/reserver', [EtudiantReservationController::class, 'store'])->name('etudiant.reserver');
+    // Route::post('/logements/{logement}/reserver', [EtudiantReservationController::class, 'store'])->name('reservations.store');
+
+    Route::post('/logements/reservations/{logement}', [EtudiantReservationController::class, 'store'])->name('etudiants.reservations.store');
     Route::get('/mes-reservations', [EtudiantReservationController::class, 'index'])->name('etudiant.reservations.index');
     Route::get('/reservations/{reservation}/contrat', [EtudiantReservationController::class, 'contrat'])->name('etudiant.reservations.contrat');
-
+    Route::get('/reservations/{logement}/create', [EtudiantReservationController::class, 'create'])->name('etudiant.reservations.create');
 });
+// Route pour la messagerie entre le propriétaire et l'étudiant
 Route::get('/etudiant/messages/{proprietaireId}', [MessageController::class, 'conversation'])->name('etudiants.messages.conversation');
 Route::get('/proprietaire/messages/{etudiantId}', [MessageController::class, 'conversationEtudiant'])->name('proprietaire.messages.conversation');
-
-
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/proprietaire/messages', [MessageController::class, 'proprietaireIndex'])->name('proprietaire.messages');
-//     Route::get('/etudiant/messages', [MessageController::class, 'etudiantIndex'])->name('etudiant.messages');
-
-//     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
-// });
-// Route pour la discussion entre le propriétaire et l'étudiant
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/conversation/{id}', [MessageController::class, 'conversation'])->name('messages.conversation');
-//     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
-// });
-
-
 
 //Déconnexion
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
@@ -231,3 +222,10 @@ Route::prefix('etudiant')->name('etudiant.')->group(function () {
 
 // Route pour afficher le detail d'un logement
 Route::get('/etudiant/logements/{logement}', [LogementController::class, 'show'])->name('etudiant.logements.show');
+
+// Route pour supprimer une réservation par l'étudiant
+Route::delete('/etudiant/reservations/{reservation}', [\App\Http\Controllers\Etudiant\ReservationController::class, 'destroy'])
+    ->name('etudiant.reservations.destroy');
+
+    // Route pour supprimer une réservation par le propriétaire
+Route::delete('/proprietaire/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('proprietaire.reservations.destroy');

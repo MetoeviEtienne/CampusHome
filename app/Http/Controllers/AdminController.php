@@ -56,7 +56,7 @@ class AdminController extends Controller
 
         $admin->update($request->only('name', 'email'));
 
-        return redirect()->route('admins.index')->with('success', 'Administrateur mis à jour.');
+        return redirect()->route('admin.admins.index')->with('success', 'Administrateur mis à jour.');
     }
 
     public function destroy(Admin $admin)
