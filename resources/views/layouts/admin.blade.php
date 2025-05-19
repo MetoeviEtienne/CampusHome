@@ -61,12 +61,17 @@
                         📜 Historique
                     </a>
                 </li>
+                <li>
+                <a href="#" class="block px-6 py-3 text-gray-700 hover:bg-blue-100 hover:text-blue-600 font-medium rounded transition">
+                    📬 Contacts
+                </a>
+             </li>
             </ul>
         </nav>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto bg-gray-100">
+    <main class="flex-1 overflow-y-autoa bg-gray-100">
         <header class="hidden md:flex bg-white shadow p-4 justify-between items-center">
             <h1 class="text-xl font-semibold text-gray-800 mx-auto">Tableau de bord</h1>
             <div class="flex items-center space-x-3 absolute right-4">

@@ -1,4 +1,4 @@
-@extends('layouts.etudiant')
+@extends('layouts.naveshow')
 
 @section('title')
     @isset($proprietaire)

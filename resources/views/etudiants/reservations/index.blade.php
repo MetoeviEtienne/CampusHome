@@ -1,4 +1,4 @@
-@extends('layouts.etudiant')
+@extends('layouts.naveshow')
 
 @section('content')
 <div class="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-lg">
@@ -36,42 +36,52 @@
                             <strong>Statut :</strong> 
                             <span class="font-semibold text-sm 
                                 @if($reservation->statut === 'approuvée') text-green-600 
-                                @elseif($reservation->statut === 'rejetee') text-red-600 
-                                @elseif($reservation->statut === 'annulee') text-gray-500 
+                                @elseif($reservation->statut === 'rejetée') text-red-600 
+                                @elseif($reservation->statut === 'annulée') text-gray-500 
                                 @else text-yellow-600 @endif">
                                 {{ ucfirst($reservation->statut) }}
                             </span>
                         </p>
-                        @if ($reservation->statut === 'approuvée')
-                        {{-- Affiche le lien contrat uniquement si approuvée et contrat existant --}}
-                        {{-- @if ($reservation->statut === 'approuvée' && $reservation->contrat) --}}
-                        {{-- <a href="{{ route('etudiant.reservations.contrat', $reservation) }}" target="_blank" --}}
-                            <a href="#" target="_blank"
+
+                        {{-- Lien vers le contrat si approuvée --}}
+                        @if ($reservation->statut === 'approuvée' && $reservation->contrat)
+                            <a href="{{ asset('storage/' . $reservation->contrat) }}" 
+                               download 
                                class="inline-block mt-2 text-sm text-blue-600 hover:underline">
-                                Voir le contrat PDF
+                                📄 Télécharger le contrat PDF
                             </a>
                         @endif
                     </div>
+                     {{-- @if ($reservation->statut === 'approuvée')
+                    <form action="{{ route('paiement.momo') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="phone" value="{{ auth()->user()->phone ?? '' }}">
+                        <input type="hidden" name="amount" value="{{ $reservation->logement->loyer * 0.3 }}">
+                        <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">
+                            Payer avance
+                        </button>
+                    </form>
+                    @endif --}}
 
+                    {{-- Afficher le bouton de paiement uniquement si le statut est approuvé --}}
                     {{-- Actions --}}
-                    <div class="flex space-x-3">
+                    <div class="flex flex-col space-y-2 items-end">
                         @if ($reservation->statut === 'approuvée')
-                        {{-- <a href="{{ route('etudiant.reservations.payerAvance', $reservation) }}"  --}}
-                            <a href="#" 
+                            <a href="#"
                                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">
                                 Payer avance
                             </a>
                         @endif
 
-                        @if ($reservation->statut !== 'approuvee')
-                            <form action="{{ route('etudiant.reservations.destroy', $reservation) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm">
-                                    Supprimer
-                                </button>
-                            </form>
-                        @endif
+                        {{-- Supprimer disponible tout le temps --}}
+                        <form action="{{ route('etudiant.reservations.destroy', $reservation) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm">
+                                Supprimer
+                            </button>
+                        </form>
                     </div>
                 </div>
             @endforeach

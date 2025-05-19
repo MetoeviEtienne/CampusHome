@@ -33,6 +33,11 @@ class Reservation extends Model
         {
             return $this->hasMany(\App\Models\Reservation::class, 'etudiant_id');
         }
+    // Relation avec le paiement
+    public function paiements()
+        {
+            return $this->hasMany(Paiement::class);
+        }
 
 
 }

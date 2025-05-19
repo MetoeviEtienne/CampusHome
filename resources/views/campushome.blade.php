@@ -73,8 +73,11 @@
                         <h1 class="text-4xl md:text-6xl font-bold mb-4">Plateforme de recherche de location des étudiants</h1>
                         <p class="text-lg md:text-xl mb-8">Trouvez votre logement étudiant idéal et simplifiez votre vie académique.</p>
                         <div class="space-x-4">
-                            <a href="{{ route('register') }}" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">S'inscrire</a>
-                            <a href="{{ route('register') }}" class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">Explorer</a>
+<a href="{{ route('contact.index') }}" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">
+    Contactez-nous
+</a>
+
+                            <a href="#" class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">A savoir</a>
                         </div>
                     </div>
                 </div>
@@ -88,8 +91,8 @@
                         <h1 class="text-4xl md:text-6xl font-bold mb-4">Votre maison proche de chez vous</h1>
                         <p class="text-lg md:text-xl mb-8">Des logements adaptés à vos besoins et à votre budget.</p>
                         <div class="space-x-4">
-                            <a href="{{ route('register') }}" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">S'inscrire</a>
-                            <a href="{{ route('register') }}" class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">Explorer</a>
+                           <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">Contactez-nous</a>
+                            <a href="#" class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">A savoir</a>
                         </div>
                     </div>
                 </div>
@@ -102,8 +105,8 @@
                         <h1 class="text-4xl md:text-6xl font-bold mb-4">Votre maison proche de chez vous</h1>
                         <p class="text-lg md:text-xl mb-8">Des logements adaptés à vos besoins et à votre budget.</p>
                         <div class="space-x-4">
-                            <a href="{{ route('register') }}" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">S'inscrire</a>
-                            <a href="{{ route('register') }}" class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">Explorer</a>
+                            <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">Contactez-nous</a>
+                            <a href="#" class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">A savoir</a>
                         </div>
                     </div>
                 </div>
@@ -111,46 +114,72 @@
         </div>
     </section>
 
-    <!-- À propos de DashboardCampus -->
-    <section class="py-16">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl md:text-5xl font-bold mb-8">À propos de CampusHome</h2>
-            <p class="text-lg md:text-xl mb-8">CampusHome est une plateforme dédiée aux étudiants pour simplifier la recherche de logements, la gestion des réservations et les paiements en ligne. Nous offrons une expérience fluide et sécurisée pour que vous puissiez vous concentrer sur vos études.</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                    <img src="https://via.placeholder.com/80?text=Icon" alt="Icon" class="mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Flexibilité</h3>
-                    <p class="text-gray-600">Trouvez des logements adaptés à vos besoins et à votre emploi du temps.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                    <img src="https://via.placeholder.com/80?text=Icon" alt="Icon" class="mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Sécurité</h3>
-                    <p class="text-gray-600">Des paiements sécurisés et une gestion transparente des réservations.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                    <img src="https://via.placeholder.com/80?text=Icon" alt="Icon" class="mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Communauté</h3>
-                    <p class="text-gray-600">Rejoignez une communauté d'étudiants et de propriétaires engagés.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                    <img src="https://via.placeholder.com/80?text=Icon" alt="Icon" class="mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Flexibilité</h3>
-                    <p class="text-gray-600">Trouvez des logements adaptés à vos besoins et à votre emploi du temps.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                    <img src="https://via.placeholder.com/80?text=Icon" alt="Icon" class="mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Sécurité</h3>
-                    <p class="text-gray-600">Des paiements sécurisés et une gestion transparente des réservations.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                    <img src="https://via.placeholder.com/80?text=Icon" alt="Icon" class="mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Communauté</h3>
-                    <p class="text-gray-600">Rejoignez une communauté d'étudiants et de propriétaires engagés.</p>
-                </div>
+    <!-- À propos de CampusHome -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-5xl font-bold mb-6 text-blue-800">Trouvez votre logement étudiant en toute simplicité</h2>
+        <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
+            CampusHome est votre partenaire logement idéal. Explorez des offres vérifiées, réservez en quelques clics, échangez avec les propriétaires et payez en toute sécurité, le tout depuis un seul endroit.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            <!-- Flexibilité -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <img src="https://i.pinimg.com/736x/65/3f/a3/653fa38cd891a022ac5a50b61a343e06.jpg" alt="Flexibilité" class="mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-blue-700">Flexibilité maximale</h3>
+                <p class="text-gray-600">
+                    Recherchez selon vos critères : proximité du campus, type de logement, budget... vous êtes libre de choisir.
+                </p>
+            </div>
+
+            <!-- Sécurité -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <img src="https://i.pinimg.com/736x/4b/15/ec/4b15ecbb84bb2e1bd22f82cb7db303b7.jpg" alt="Sécurité" class="mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-blue-700">Transactions sécurisées</h3>
+                <p class="text-gray-600">
+                    Réservations et paiements sont protégés pour garantir votre tranquillité. Zéro stress, zéro surprise.
+                </p>
+            </div>
+
+            <!-- Communauté -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <img src="https://i.pinimg.com/736x/e7/22/fd/e722fdbd0d5da4c6a6c09e0b8b915324.jpg" alt="Communauté" class="mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-blue-700">Une vraie communauté</h3>
+                <p class="text-gray-600">
+                    Rejoignez des milliers d’étudiants et échangez avec des propriétaires de confiance. L’entraide commence ici.
+                </p>
+            </div>
+
+            <!-- Rapidité -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <img src="https://i.pinimg.com/736x/47/72/d5/4772d5ae19f23190903c283af02f7b00.jpg" alt="Rapidité" class="mx-auto mb-4 ">
+                <h3 class="text-xl font-semibold mb-2 text-blue-700">Réservation instantanée</h3>
+                <p class="text-gray-600">
+                    Plus besoin d'attendre : dès que vous trouvez le bon logement, vous pouvez réserver immédiatement.
+                </p>
+            </div>
+
+            <!-- Suivi & gestion -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <img src="https://i.pinimg.com/736x/af/e0/0f/afe00fa33fc676706eee5c7e21c9ae89.jpg" alt="Suivi" class="mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-blue-700">Tout sous contrôle</h3>
+                <p class="text-gray-600">
+                    Suivez vos réservations, paiements, avis et discussions depuis votre tableau de bord personnel.
+                </p>
+            </div>
+
+            <!-- Accessibilité -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <img src="https://i.pinimg.com/736x/37/f1/52/37f152f43481ed3f9ea23f2f7cb248a9.jpg" alt="Accessibilité" class="mx-auto mb-4">
+                <h3 class="text-xl font-semibold mb-2 text-blue-700">Accessible partout</h3>
+                <p class="text-gray-600">
+                    Une plateforme responsive, accessible 24h/24 sur mobile ou ordinateur. CampusHome vous suit partout.
+                </p>
             </div>
         </div>
-    </section>
-    
+    </div>
+</section>
+
 
     <!-- Footer -->
     <footer class="bg-blue-600 text-white py-8">

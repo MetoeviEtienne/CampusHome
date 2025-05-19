@@ -17,8 +17,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\ValidationLogementController;
 use App\Http\Controllers\Proprietaire\AvisController as ProprietaireAvisController;
 use App\Http\Controllers\AvisController as EtudiantAvisController;
-
-
+use App\Http\Controllers\PaiementController;
+use App\Http\Controllers\ContactController;
 
 
 Route::get('/', function () {
@@ -193,7 +193,7 @@ Route::get('/admin/logements/historique', [ValidationLogementController::class, 
 // Routes pour la gestion des maintenances
 // Route pour afficher la liste des demandes de maintenance
 // Route pour mettre à jour le statut d'une demande de maintenance
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
     Route::get('maintenances', [\App\Http\Controllers\Admin\MaintenanceController::class, 'index'])->name('maintenances.index');
     Route::patch('maintenances/{maintenance}', [\App\Http\Controllers\Admin\MaintenanceController::class, 'updateStatus'])->name('maintenances.update');
 });
@@ -201,7 +201,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 // Route pour afficher les avis
 // Route pour vérifier un avis
 // Route pour supprimer un avis
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
     Route::get('avis', [\App\Http\Controllers\Admin\AvisController::class, 'index'])->name('avis.index');
     Route::patch('avis/{avis}/verifier', [\App\Http\Controllers\Admin\AvisController::class, 'verifier'])->name('avis.verifier');
 });
@@ -229,3 +229,13 @@ Route::delete('/etudiant/reservations/{reservation}', [\App\Http\Controllers\Etu
 
     // Route pour supprimer une réservation par le propriétaire
 Route::delete('/proprietaire/reservations/{reservation}', [ReservationController::class, 'destroy'])->name('proprietaire.reservations.destroy');
+
+// Route pour le paiement par Mobile Money
+// Route::post('/paiement/momo', [PaiementController::class, 'payer']);
+
+Route::post('/paiement/momo', [PaiementController::class, 'payer'])->name('paiement.momo');
+Route::post('/paiement/momo/callback', [PaiementController::class, 'callback'])->name('paiement.momo.callback');
+
+// Route pour le formulaire de contact
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');

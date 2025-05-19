@@ -1,4 +1,4 @@
-@extends('layouts.etudiant')
+@extends('layouts.naveshow')
 
 @section('content')
 <div class="container mx-auto p-4">
