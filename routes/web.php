@@ -19,6 +19,13 @@ use App\Http\Controllers\Proprietaire\AvisController as ProprietaireAvisControll
 use App\Http\Controllers\AvisController as EtudiantAvisController;
 use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 
 
 Route::get('/', function () {
@@ -103,7 +110,6 @@ Route::middleware(['auth'])->prefix('proprietaire')->group(function() {
     Route::post('/messages', [MessageController::class, 'store'])->name('proprietaire.messages.store'); // Envoyer un message
 });
 
-
 Route::get('/etudiant/logements/{logement}/reservation', [ReservationController::class, 'create'])
     ->name('etudiant.reservations.create')
     ->middleware('auth:etudiant');
@@ -117,8 +123,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/proprietaire/messages', [MessageController::class, 'proprietaireIndex'])->name('proprietaire.messages');
     Route::get('/etudiant/messages', [MessageController::class, 'etudiantIndex'])->name('etudiants.messages');
     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+    
     // Route::get('/etudiant/logements/{logement}', [EtudiantLogementController::class, 'show'])->name('etudiant.logements.show');
-
     // Route::post('/logements/{logement}/reserver', [EtudiantReservationController::class, 'store'])->name('etudiant.reserver');
     // Route::post('/logements/{logement}/reserver', [EtudiantReservationController::class, 'store'])->name('reservations.store');
 
@@ -239,3 +245,47 @@ Route::post('/paiement/momo/callback', [PaiementController::class, 'callback'])-
 // Route pour le formulaire de contact
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+
+
+// Routes pour la réinitialisation du mot de passe
+Route::middleware('guest')->group(function () {
+    // Formulaire demande lien réinitialisation
+    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->name('password.request');
+
+    // Envoi mail avec lien réinitialisation
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
+
+    // Formulaire pour saisir le nouveau mot de passe (avec token)
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->name('password.reset');
+
+    // Validation et mise à jour du nouveau mot de passe
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.store');
+});
+
+
+// Routes pour la vérification de l'email
+Route::middleware('auth')->group(function () {
+    // Page de demande de vérification
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
+
+    // Lien dans l'email qui vérifie l'utilisateur
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+
+        return redirect('/dashboard');
+    })->middleware(['signed'])->name('verification.verify');
+
+    // Renvoyer un nouveau lien
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with('status', 'verification-link-sent');
+    })->middleware(['throttle:6,1'])->name('verification.send');
+});

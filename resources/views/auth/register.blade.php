@@ -1,73 +1,151 @@
-<x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-            <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-6">Créer un compte</h2>
-            <form method="POST" action="{{ route('register') }}">
-                @csrf
+@extends('layouts.custom-layout')
 
-                <!-- Name -->
-                <div class="mb-4">
-                    <x-input-label for="name" :value="__('Nom complet')" />
-                    <x-text-input id="name" class="mt-1 block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                </div>
+@section('title', 'Créer un compte')
 
-                <!-- Email Address -->
-                <div class="mt-4 mb-4">
-                    <x-input-label for="email" :value="__('Adresse e-mail')" />
-                    <x-text-input id="email" class="mt-1 block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" type="email" name="email" :value="old('email')" required autocomplete="username" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                </div>
+@section('content')
 
-                 <!-- Téléphone -->
-                 <div class="mt-4 mb-4">
-                    <x-input-label for="phone" :value="__('Téléphone')" />
-                    <x-text-input id="phone" class="mt-1 block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" type="phone" name="phone" :value="old('phone')" required autocomplete="username" />
-                    <x-input-error :messages="$errors->get('phone')" class="mt-2" />
-                </div>
+<h2 class="text-center text-3xl font-extrabold text-gray-900 mb-6">Créer un compte</h2>
 
-                <!-- Ville -->
-                <div class="mt-4 mb-4">
-                    <x-input-label for="ville" :value="__('Ville')" />
-                    <x-text-input id="ville" class="mt-1 block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" type="text" name="ville" :value="old('ville')" required autocomplete="username" />
-                    <x-input-error :messages="$errors->get('ville')" class="mt-2" />
-                </div>
+<form method="POST" action="{{ route('register') }}" id="registerForm">
+    @csrf
 
-                <div class="mt-4 mb-4">
-                    <x-input-label for="role" :value="__('Vous êtes')" />
-                    <select id="role" name="role" class="mt-1 block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
-                        <option value="student">Étudiant</option>
-                        <option value="owner">Propriétaire</option>
-                    </select>
-                    <x-input-error :messages="$errors->get('role')" class="mt-2" />
-                </div>
-                
+    <input type="hidden" name="current_step" id="current_step" value="1" />
 
-                <!-- Password -->
-                <div class="mt-4 mb-4">
-                    <x-input-label for="password" :value="__('Mot de passe')" />
-                    <x-text-input id="password" class="mt-1 block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" type="password" name="password" required autocomplete="new-password" />
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                </div>
+  <div class="step" id="step1">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        <!-- Colonne gauche -->
+        <div>
+            <label for="name" class="block text-gray-700 font-semibold mb-2">Nom complet</label>
+            <input id="name" name="name" type="text" required autofocus autocomplete="name"
+                value="{{ old('name') }}"
+                class="block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+            @error('name')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
 
-                <!-- Confirm Password -->
-                <div class="mt-4 mb-6">
-                    <x-input-label for="password_confirmation" :value="__('Confirmez le mot de passe')" />
-                    <x-text-input id="password_confirmation" class="mt-1 block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" type="password" name="password_confirmation" required autocomplete="new-password" />
-                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                </div>
+            <label for="email" class="block text-gray-700 font-semibold mt-6 mb-2">Adresse e-mail</label>
+            <input id="email" name="email" type="email" required autocomplete="username"
+                value="{{ old('email') }}"
+                class="block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+            @error('email')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
 
-                <div class="flex items-center justify-between mt-6">
-                    <a class="text-sm text-blue-600 hover:underline" href="{{ route('login') }}">
-                        Déjà inscrit ?
-                    </a>
+        <!-- Colonne droite -->
+        <div>
+            <label for="phone" class="block text-gray-700 font-semibold mb-2">Téléphone</label>
+            <input id="phone" name="phone" type="text" required
+                value="{{ old('phone') }}"
+                class="block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+            @error('phone')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
 
-                
-                    <x-primary-button class="bg-indigo-600 hover:bg-indigo-700 text-black font-bold py-3 px-6 rounded-lg text-lg">
-                        {{ __('S\'inscrire') }}
-                    </x-primary-button>
-                </div>
-            </form>
+            <label for="ville" class="block text-gray-700 font-semibold mt-6 mb-2">Ville</label>
+            <input id="ville" name="ville" type="text" required
+                value="{{ old('ville') }}"
+                class="block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+            @error('ville')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
         </div>
     </div>
-</x-guest-layout>
+
+    <div class="flex flex-col items-end space-y-2">
+        <button type="button" onclick="nextStep()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-150 ease-in-out">
+            Suivant
+        </button>
+        <a href="/login" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+            Déjà un compte ?
+        </a>
+    </div>
+</div>
+
+    <!-- Étape 2 -->
+    <div class="step hidden" id="step2">
+        <div class="mb-4">
+            <label for="role" class="block text-gray-700 font-semibold mb-2">Vous êtes</label>
+            <select id="role" name="role" required
+                class="block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="">-- Choisissez un rôle --</option>
+                <option value="student" @if(old('role')=='student') selected @endif>Étudiant</option>
+                <option value="owner" @if(old('role')=='owner') selected @endif>Propriétaire</option>
+            </select>
+            @error('role')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="flex justify-between">
+            <button type="button" onclick="prevStep()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-150 ease-in-out">
+                Précédent
+            </button>
+            <button type="button" onclick="nextStep()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-150 ease-in-out">
+                Suivant
+            </button>
+        </div>
+    </div>
+
+    <!-- Étape 3 -->
+    <div class="step hidden" id="step3">
+        <div class="mb-4">
+            <label for="password" class="block text-gray-700 font-semibold mb-2">Mot de passe</label>
+            <input id="password" name="password" type="password" required autocomplete="new-password"
+                class="block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+            @error('password')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="mb-6">
+            <label for="password_confirmation" class="block text-gray-700 font-semibold mb-2">Confirmez le mot de passe</label>
+            <input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password"
+                class="block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+            @error('password_confirmation')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="flex justify-between">
+            <button type="button" onclick="prevStep()" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-150 ease-in-out">
+                Précédent
+            </button>
+
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-150 ease-in-out">
+                S'inscrire
+            </button>
+        </div>
+    </div>
+</form>
+
+<script>
+    let currentStep = 1;
+    function showStep(step) {
+        document.querySelectorAll('.step').forEach((el) => {
+            el.classList.add('hidden');
+        });
+        document.getElementById('step' + step).classList.remove('hidden');
+        document.getElementById('current_step').value = step;
+        currentStep = step;
+    }
+
+    function nextStep() {
+        if(currentStep < 3) {
+            showStep(currentStep + 1);
+        }
+    }
+
+    function prevStep() {
+        if(currentStep > 1) {
+            showStep(currentStep - 1);
+        }
+    }
+
+    // Affiche la première étape au chargement
+    document.addEventListener('DOMContentLoaded', () => {
+        showStep(1);
+    });
+</script>
+
+@endsection
