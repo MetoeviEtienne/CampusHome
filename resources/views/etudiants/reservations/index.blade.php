@@ -51,8 +51,14 @@
                                 📄 Télécharger le contrat PDF
                             </a>
                         @endif
+
+                        <a href="{{ route('etudiant.logements.show', $reservation->logement_id) }}"
+                            class="inline-block mt-2 text-blue-500 hover:underline text-sm">
+                            🔍 Voir le logement réservé
+                         </a>
+                         
                     </div>
-                     {{-- @if ($reservation->statut === 'approuvée')
+                     @if ($reservation->statut === 'approuvée')
                     <form action="{{ route('paiement.momo') }}" method="POST">
                         @csrf
                         <input type="hidden" name="phone" value="{{ auth()->user()->phone ?? '' }}">
@@ -62,17 +68,17 @@
                             Payer avance
                         </button>
                     </form>
-                    @endif --}}
+                    @endif
 
                     {{-- Afficher le bouton de paiement uniquement si le statut est approuvé --}}
                     {{-- Actions --}}
-                    <div class="flex flex-col space-y-2 items-end">
+                    {{-- <div class="flex flex-col space-y-2 items-end">
                         @if ($reservation->statut === 'approuvée')
                             <a href="#"
                                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">
                                 Payer avance
                             </a>
-                        @endif
+                        @endif --}}
 
                         {{-- Supprimer disponible tout le temps --}}
                         <form action="{{ route('etudiant.reservations.destroy', $reservation) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">

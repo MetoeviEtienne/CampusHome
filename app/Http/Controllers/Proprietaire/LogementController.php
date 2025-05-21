@@ -6,16 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Models\Logement;
 use Illuminate\Http\Request;
 use App\Models\PhotoLogement;
+use App\Notifications\LogementCreeNotification;
 
 class LogementController extends Controller
 {
     // Afficher la liste des logements
-    public function index()
-    {
-        $logements = auth()->user()->logements()->with('photos')->get();
+    // public function index()
+    // {
+    //     $logements = auth()->user()->logements()->with('photos')->get();
         
-        return view('proprietaire.logements.index', compact('logements'));
-    }
+    //     return view('proprietaire.logements.index', compact('logements'));
+    // }
+
+    public function index()
+        {
+            // Vérifier que l'utilisateur est connecté et est un propriétaire
+            if (!auth()->check() || auth()->user()->role !== 'owner') {
+                return redirect()->route('login')->with('error', 'Accès réservé aux propriétaires.');
+            }
+
+            $logements = auth()->user()->logements()->with('photos')->get();
+            return view('proprietaire.logements.index', compact('logements'));
+        }
+
 
     // creer un logement
     public function create()
@@ -46,6 +59,9 @@ class LogementController extends Controller
                 $logement->photos()->create(['chemin' => $path]);
             }
         }
+
+        // ✅ Notification par mail
+        auth()->user()->notify(new LogementCreeNotification());
 
         return redirect()->route('proprietaire.logements.index')->with('success', 'Logement créé avec succès! En attente de validation.');
     }

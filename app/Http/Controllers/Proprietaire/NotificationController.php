@@ -14,7 +14,7 @@ class NotificationController extends Controller
 
         return view('proprietaire.notifications.index', compact('notificationsMessages'));
     }
-
+    // Lire une commentaire
     public function lire($id)
     {
         $notification = Auth::user()->notifications()->findOrFail($id);
@@ -24,4 +24,12 @@ class NotificationController extends Controller
 
         return redirect()->back();
     }
+
+    // Lire tous les commentaires comme marqué lu
+    public function toutesLues()
+    {
+        Auth::user()->unreadNotifications->markAsRead();
+        return redirect()->back()->with('success', 'Toutes les notifications ont été marquées comme lues.');
+    }
+
 }

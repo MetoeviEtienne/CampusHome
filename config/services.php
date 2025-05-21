@@ -42,5 +42,9 @@ return [
         ],
 
 
-
+    'kkiapay' => [
+            'public_key' => env('KKIAPAY_PUBLIC_KEY'),
+            // 'private_key' => env('KKIAPAY_PRIVATE_KEY'), // pour usage serveur si besoin
+        ],
+        
 ];

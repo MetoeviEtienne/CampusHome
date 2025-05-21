@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Proprietaire;
 
 use App\Http\Controllers\Controller;
@@ -9,12 +10,16 @@ class AvisController extends Controller
 {
     public function index()
     {
-        // Récupérer tous les avis associés aux logements du propriétaire connecté
+        // Vérifier que l'utilisateur est connecté et est un propriétaire
+        if (!auth()->check() || auth()->user()->role !== 'owner') {
+            return redirect()->route('login')->with('error', 'Accès réservé aux propriétaires.');
+        }
+
+        // Récupérer les avis des logements appartenant à ce propriétaire
         $avis = Avis::whereHas('logement', function ($query) {
-            $query->where('proprietaire_id', auth()->user()->id); // Lier les avis au propriétaire via le logement
+            $query->where('proprietaire_id', auth()->id());
         })->get();
 
-        // Passer les avis à la vue
         return view('proprietaire.avis.index', compact('avis'));
     }
 }

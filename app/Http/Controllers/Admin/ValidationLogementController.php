@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Logement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\LogementValideNotification;
+use App\Notifications\LogementRejeteNotification;
 
 class ValidationLogementController extends Controller
 {
@@ -22,7 +24,7 @@ class ValidationLogementController extends Controller
         return view('admin.logements.index', compact('logements'));
     }
 
-    // Affiche le formulaire de validation d'un logement
+    // Fonction pour la validation de logement
     public function valider(Logement $logement)
     {
         $logement->update([
@@ -30,6 +32,8 @@ class ValidationLogementController extends Controller
             'validateur_id' => Auth::id(),
             'valide_le' => now(),
         ]);
+        // Envoyer une notification par mail au propriétaire
+        $logement->proprietaire->notify(new LogementValideNotification($logement));
 
         return redirect()->back()->with('success', 'Logement validé avec succès.');
     }
@@ -51,6 +55,9 @@ class ValidationLogementController extends Controller
                 'valide_le' => now(),
             ]);
 
+            // Envoyer une notification par mail au propriétaire
+            $logement->proprietaire->notify(new LogementRejeteNotification($logement));
+            
             return redirect()->route('admin.logements.index')->with('error', 'Le logement a été rejeté.');
         }
     

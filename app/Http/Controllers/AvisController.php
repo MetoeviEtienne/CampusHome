@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Avis;
 use App\Models\Logement;
 use Illuminate\Http\Request;
+use App\Notifications\NouvelAvis;
 
 class AvisController extends Controller
 {
@@ -23,16 +24,21 @@ class AvisController extends Controller
 
     $logement = Logement::findOrFail($logementId);
 
-    Avis::create([
+    $avis = Avis::create([
         'auteur_id' => auth()->user()->id,
         'logement_id' => $logement->id,
         'commentaire' => $request->commentaire,
         'verifie' => false,
-        //'reservation_id' => null, // nullable en BDD
     ]);
+
+    // Notifier le propriétaire
+    if ($logement->proprietaire) {
+        $logement->proprietaire->notify(new NouvelAvis($avis));
+    }
 
     return redirect()->back()->with('success', "Merci pour votre avis !");
 }
+
 
 
     // Lister les avis d'un logement

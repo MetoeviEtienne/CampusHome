@@ -25,7 +25,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-
+use App\Http\Controllers\Proprietaire\NotificationController;
 
 
 Route::get('/', function () {
@@ -289,3 +289,15 @@ Route::middleware('auth')->group(function () {
         return back()->with('status', 'verification-link-sent');
     })->middleware(['throttle:6,1'])->name('verification.send');
 });
+
+// Route pour la notification pour le proprietaire
+Route::prefix('proprietaire/notifications')->middleware('auth')->group(function () {
+    Route::get('/', [NotificationController::class, 'index'])->name('proprietaire.notifications.index');
+    Route::get('/{id}/lire', [NotificationController::class, 'lire'])->name('notifications.lire');
+    Route::post('/toutes-lues', [NotificationController::class, 'toutesLues'])->name('notifications.toutes.lues');
+});
+
+
+//Route pour le paiement
+Route::post('/paiement/momo', [PaiementController::class, 'initierPaiement'])->name('paiement.momo');
+Route::get('/paiement/callback', [PaiementController::class, 'callback'])->name('paiement.callback');
