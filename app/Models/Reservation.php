@@ -39,5 +39,10 @@ class Reservation extends Model
             return $this->hasMany(Paiement::class);
         }
 
+    // Méthode pour vérifier si l’avance est payée
+    public function aPayeAvance()
+    {
+        return $this->paiements()->where('type', 'avance')->exists();
+    }
 
 }

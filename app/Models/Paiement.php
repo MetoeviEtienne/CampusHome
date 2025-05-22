@@ -8,12 +8,14 @@ class Paiement extends Model
     protected $fillable = [
         'reservation_id',
         'montant',
+        'type',
         'taxe',
         'methode',
         'reference',
-        'quittance',
         'statut',
+        'quittance',
     ];
+
 
     public function reservation()
     {

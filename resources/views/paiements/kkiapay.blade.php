@@ -18,7 +18,8 @@
         openKkiapayWidget({
             amount: "{{ $montant }}",
             key: "{{ $publicKey }}",
-            data: "{{ $reservation->id }}",
+            // data: "{{ $reservation->id }}",
+            data: "{{ $reservation->id }}|{{ $type }}", // on encode les deux valeurs
             name: "{{ auth()->user()->name }}",
             email: "{{ auth()->user()->email }}",
             phone: "{{ $phone }}",

@@ -3,6 +3,7 @@
         ->where('etudiant_id', auth()->id())
         ->latest()
         ->first();
+    $avancePayee = $reservation && $reservation->paiements->where('type', 'avance')->where('statut', 'payé')->isNotEmpty();
 @endphp
 
 @extends('layouts.naveshow')
@@ -62,25 +63,39 @@
             {{-- Bouton retour --}}
             <a href="{{ route('etudiant.logements.index') }}"
                class="bg-gray-600 hover:bg-gray-800 text-white py-2 px-4 rounded w-full md:w-auto text-center">
-                ← Retour à la liste
+                ← Accueil
             </a>
 
             {{-- Zone réservation / actions --}}
             <div class="flex flex-col gap-2 w-full md:w-auto">
-
                 {{-- Aucun réservation OU déjà rejetée/annulée --}}
-                @if (!$reservation || in_array($reservation->statut, ['rejetee', 'annulée']))
+                @if (!$reservation || in_array($reservation->statut, ['rejetée', 'annulée']))
                     <a href="{{ route('etudiant.reservations.create', $logement) }}" 
-                       class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center">
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-center">
                         Réserver ce logement
                     </a>
+                @elseif ($reservation->statut === 'approuvée')
+                    @if ($avancePayee)
+                        {{-- Avance payée : afficher "Déjà loué" + bouton maintenance --}}
+                        <div class="bg-green-600 text-white px-4 py-2 rounded text-center mb-2">
+                            🏠 Déjà loué
+                        </div>
+                        <a href="{{ route('etudiants.maintenance.create', $reservation->id) }}" 
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-center">
+                            Demander maintenance
+                        </a>
+                    @else
+                        {{-- Avance pas encore payée : afficher "Déjà réservé" --}}
+                        <div class="bg-gray-200 text-gray-600 px-4 py-2 rounded text-center">
+                            🔒 Déjà réservé
+                        </div>
+                    @endif
                 @else
-                    {{-- Toujours afficher seulement "Déjà réservé" --}}
+                    {{-- Pour d'autres statuts --}}
                     <div class="bg-gray-200 text-gray-600 px-4 py-2 rounded text-center">
                         🔒 Déjà réservé
                     </div>
                 @endif
-
             </div>
         </div>
     </div>

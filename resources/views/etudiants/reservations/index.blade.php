@@ -58,18 +58,29 @@
                          </a>
                          
                     </div>
-                     @if ($reservation->statut === 'approuvée')
-                    <form action="{{ route('paiement.momo') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="phone" value="{{ auth()->user()->phone ?? '' }}">
-                        <input type="hidden" name="amount" value="{{ $reservation->logement->loyer * 0.3 }}">
-                        <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
-                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">
-                            Payer avance
-                        </button>
-                    </form>
-                    @endif
+                    
+                    @if ($reservation->statut === 'approuvée')
+                        <form action="{{ route('paiement.momo') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="phone" value="{{ auth()->user()->phone ?? '' }}">
 
+                            @php
+                                $aPayeAvance = $reservation->aPayeAvance();
+                                $amount = $aPayeAvance 
+                                    ? $reservation->logement->loyer 
+                                    : $reservation->logement->loyer * 3.5;
+                                $type = $aPayeAvance ? 'loyer' : 'avance';
+                            @endphp
+
+                            <input type="hidden" name="amount" value="{{ $amount }}">
+                            <input type="hidden" name="type" value="{{ $type }}">
+                            <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
+
+                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">
+                                Payer {{ $type }}
+                            </button>
+                        </form>
+                    @endif
                     {{-- Afficher le bouton de paiement uniquement si le statut est approuvé --}}
                     {{-- Actions --}}
                     {{-- <div class="flex flex-col space-y-2 items-end">
@@ -88,6 +99,13 @@
                                 Supprimer
                             </button>
                         </form>
+
+                        @if ($reservation->paiement)
+                        <a href="{{ route('paiement.recu', $reservation->paiement->id) }}" target="_blank"
+                            class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700">
+                            Télécharger le reçu
+                        </a>
+                        @endif
                     </div>
                 </div>
             @endforeach

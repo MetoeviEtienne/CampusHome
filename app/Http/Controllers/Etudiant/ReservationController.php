@@ -59,9 +59,20 @@ class ReservationController extends Controller
     /**
      * Afficher toutes les réservations de l'étudiant connecté.
      */
+    // public function index()
+    // {
+    //     $reservations = Auth::user()->reservations()->with('logement')->latest()->get();
+    //     return view('etudiants.reservations.index', compact('reservations'));
+    // }
+
     public function index()
     {
-        $reservations = Auth::user()->reservations()->with('logement')->latest()->get();
+        $reservations = Auth::user()
+            ->reservations()
+            ->with(['logement', 'paiements']) // 👈 On charge aussi les paiements
+            ->latest()
+            ->get();
+
         return view('etudiants.reservations.index', compact('reservations'));
     }
 

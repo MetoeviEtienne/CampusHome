@@ -26,6 +26,7 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Proprietaire\NotificationController;
+use App\Http\Controllers\Etudiant\MaintenanceEtudiantController;
 
 
 Route::get('/', function () {
@@ -301,3 +302,14 @@ Route::prefix('proprietaire/notifications')->middleware('auth')->group(function 
 //Route pour le paiement
 Route::post('/paiement/momo', [PaiementController::class, 'initierPaiement'])->name('paiement.momo');
 Route::get('/paiement/callback', [PaiementController::class, 'callback'])->name('paiement.callback');
+
+// Route pour telecharger le reçu de paiement
+Route::get('/paiements/{paiement}/recu', [PaiementController::class, 'telechargerRecu'])
+    ->name('paiement.recu')
+    ->middleware('auth');
+
+// Route pour la demande de la maintenance
+Route::middleware(['auth'])->group(function () {
+    Route::get('/etudiants/maintenance/{logement}/create', [MaintenanceEtudiantController::class, 'create'])->name('etudiants.maintenance.create');
+    Route::post('/etudiants/maintenance/{logement}', [MaintenanceEtudiantController::class, 'store'])->name('etudiants.maintenance.store');
+});
