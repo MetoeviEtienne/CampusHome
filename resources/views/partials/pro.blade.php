@@ -1,4 +1,4 @@
-<nav class="bg-blue-600 shadow text-white mb-6">
+<nav class="bg-blue-600 shadow text-white mb-6 fixed top-0 left-0 w-full z-50">
   <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between">
 
     <!-- Logo + Nom utilisateur -->

@@ -8,6 +8,7 @@ use App\Models\Logement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\NouvelleReservation;
+use Illuminate\Support\Carbon;
 
 class ReservationController extends Controller
 {
@@ -19,7 +20,28 @@ class ReservationController extends Controller
         $validated = $request->validate([
             'date_debut' => 'required|date|after_or_equal:today',
             'date_fin' => 'required|date|after:date_debut',
+            'universite' => 'required|string|max:255',
+            'autre_universite' => 'nullable|string|max:255',
+            'inscription_pdf' => 'required|mimes:pdf|max:2048', // max 2Mo
         ]);
+        //  // Ensuite, on calcule la date max autorisée
+        // $dateDebut = Carbon::parse($request->date_debut);
+        // $dateFinMax = $dateDebut->copy()->addDays(5)->toDateString();
+
+        // // Et on valide date_fin
+        // $request->validate([
+        //     'date_fin' => [
+        //         'required',
+        //         'date',
+        //         'after_or_equal:' . $dateDebut->toDateString(),
+        //         'before_or_equal:' . $dateFinMax,
+        //     ],
+        // ]);
+        
+    // Si l'étudiant a sélectionné "Autre", on utilise le champ texte
+    $universite = $validated['universite'] === 'Autre' && !empty($request->autre_universite)
+        ? $request->autre_universite
+        : $validated['universite'];
 
         // Vérifier si logement déjà réservé pour la période demandée
         $exists = Reservation::where('logement_id', $logement->id)
@@ -38,12 +60,20 @@ class ReservationController extends Controller
             return redirect()->back()->withErrors(['logement' => 'Ce logement est déjà réservé pour cette période.']);
         }
 
+        if ($request->hasFile('inscription_pdf')) {
+        $pdfPath = $request->file('inscription_pdf')->store('inscriptions_pdf', 'public');
+        } else {
+            $pdfPath = null;
+        }
         // Création de la réservation
         $reservation = Reservation::create([
             'etudiant_id' => Auth::id(),
             'logement_id' => $logement->id,
             'date_debut' => $validated['date_debut'],
             'date_fin' => $validated['date_fin'],
+            'universite' => $validated['universite'],
+            'inscription_pdf' => $pdfPath,
+            // 'inscription_pdf' => $validated['inscription_pdf'],
             'statut' => 'en_attente',
         ]);
 

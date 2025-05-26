@@ -23,6 +23,8 @@ return new class extends Migration
             $table->decimal('charges', 10, 2)->default(0);
             $table->text('description')->nullable();
             $table->date('disponibilite');
+            $table->string('piece_identite_path')->nullable();
+            $table->string('titre_propriete_path')->nullable();
             $table->boolean('valide')->default(false);
             $table->foreignId('validateur_id')->nullable()->constrained('users');
             $table->timestamp('valide_le')->nullable();

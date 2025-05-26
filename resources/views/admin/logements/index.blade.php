@@ -26,6 +26,29 @@
                 <p><strong>Loyer:</strong> {{ number_format($logement->loyer, 0, ',', ' ') }} FCFA</p>
                 <p><strong>Propriétaire:</strong> {{ $logement->proprietaire->name }}</p>
 
+                <!-- Liens vers les documents du propriétaire -->
+                <p>
+                    <strong>Pièce d'identité :</strong>
+                    @if($logement->piece_identite_path)
+                        <a href="{{ asset('storage/' . $logement->piece_identite_path) }}" target="_blank" class="text-blue-600 underline hover:text-blue-800">
+                            Voir le document
+                        </a>
+                    @else
+                        <span class="text-gray-500">Non disponible</span>
+                    @endif
+                </p>
+
+                <p>
+                    <strong>Titre de propriété :</strong>
+                    @if($logement->titre_propriete_path)
+                        <a href="{{ asset('storage/' . $logement->titre_propriete_path) }}" target="_blank" class="text-blue-600 underline hover:text-blue-800">
+                            Voir le document
+                        </a>
+                    @else
+                        <span class="text-gray-500">Non disponible</span>
+                    @endif
+                </p>
+
                 <!-- Formulaire de validation -->
                 <div class="flex gap-2 mt-4">
                     <form method="POST" action="{{ route('admin.logements.valider', $logement) }}" class="valider-form">
@@ -44,7 +67,6 @@
                     </form>
                 </div>
 
-                </div>
             </div>
         @endforeach
 

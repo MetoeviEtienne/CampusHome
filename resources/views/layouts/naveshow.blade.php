@@ -6,7 +6,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     @yield('head') {{-- Pour charger des scripts spécifiques dans les vues --}}
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans pt-24">
     @include('partials.etudiant.etudiantshow')
 
     <main class="py-8">

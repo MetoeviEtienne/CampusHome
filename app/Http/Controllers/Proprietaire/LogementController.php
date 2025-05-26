@@ -35,8 +35,9 @@ class LogementController extends Controller
     {
         return view('proprietaire.logements.create');
     }
+    
     // Enregistrer un nouveau logement
-    public function store(Request $request)
+     public function store(Request $request)
     {
         $validated = $request->validate([
             'titre' => 'required|string|max:255',
@@ -48,8 +49,18 @@ class LogementController extends Controller
             'charges' => 'nullable|numeric|min:0',
             'description' => 'nullable|string',
             'disponibilite' => 'required|date',
-            'photos.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+            'photos.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'piece_identite' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            'titre_propriete' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048',
         ]);
+
+        // Upload des fichiers pièce d'identité et titre de propriété
+        $pieceIdentitePath = $request->file('piece_identite')->store('documents', 'public');
+        $titreProprietePath = $request->file('titre_propriete')->store('documents', 'public');
+
+        // Ajout des chemins dans les données validées pour la création
+        $validated['piece_identite_path'] = $pieceIdentitePath;
+        $validated['titre_propriete_path'] = $titreProprietePath;
 
         $logement = auth()->user()->logements()->create($validated);
 

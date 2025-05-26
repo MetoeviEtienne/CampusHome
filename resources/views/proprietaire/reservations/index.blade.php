@@ -14,6 +14,22 @@
                 <div>
                     <p><strong>{{ $reservation->etudiant->name }}</strong> a réservé <strong>{{ $reservation->logement->titre }}</strong></p>
                     <p class="text-sm text-gray-600">Pour le {{ \Carbon\Carbon::parse($reservation->date_debut)->format('d/m/Y') }}</p>
+
+                    {{-- Nouvelle ligne Université --}}
+                    <p class="text-sm">Université : <strong>{{ $reservation->universite }}</strong></p>
+
+                    {{-- Nouvelle ligne Inscription PDF --}}
+                    <p class="text-sm">
+                        Inscription PDF : 
+                        @if ($reservation->inscription_pdf)
+                            <a href="{{ asset('storage/' . $reservation->inscription_pdf) }}" target="_blank" class="text-blue-600 underline hover:text-blue-800">
+                                Voir le document
+                            </a>
+                        @else
+                            <span class="text-gray-500 italic">Aucun document</span>
+                        @endif
+                    </p>
+
                     <p class="text-sm">
                         Statut :
                         <span class="font-semibold text-{{ $reservation->statut === 'approuvee' ? 'green' : ($reservation->statut === 'rejetee' ? 'red' : 'yellow') }}-600">

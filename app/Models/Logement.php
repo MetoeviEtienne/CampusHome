@@ -18,6 +18,8 @@ class Logement extends Model
         'loyer',
         'charges',
         'description',
+        'piece_identite_path',
+        'titre_propriete_path',
         'disponibilite',
         'proprietaire_id',
         'valide',

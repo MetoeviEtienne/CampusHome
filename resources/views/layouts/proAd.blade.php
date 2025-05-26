@@ -5,7 +5,7 @@
     <title>Tableau de bord étudiant</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans pt-24">
     @include('partials.pro')
 
     <main class="py-8">

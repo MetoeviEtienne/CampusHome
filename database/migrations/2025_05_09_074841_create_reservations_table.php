@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('etudiant_id')->constrained('users');
             $table->date('date_debut');
             $table->date('date_fin');
+            $table->string('universite'); // 👈 Université de l’étudiant
+            $table->text('inscription_pdf'); // 👈 Chemin du PDF d’inscription_
             $table->enum('statut', ['en_attente', 'approuvée', 'rejetée', 'annulée']);
             $table->text('contrat')->nullable(); // Chemin vers le contrat généré
             $table->boolean('contrat_signe')->default(false);
