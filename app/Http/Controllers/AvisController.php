@@ -17,27 +17,27 @@ class AvisController extends Controller
 
     // Stocker l'avis
     public function store(Request $request, $logementId)
-{
-    $request->validate([
-        'commentaire' => 'required|string|max:255',
-    ]);
+    {
+        $request->validate([
+            'commentaire' => 'required|string|max:255',
+        ]);
 
-    $logement = Logement::findOrFail($logementId);
+        $logement = Logement::findOrFail($logementId);
 
-    $avis = Avis::create([
-        'auteur_id' => auth()->user()->id,
-        'logement_id' => $logement->id,
-        'commentaire' => $request->commentaire,
-        'verifie' => false,
-    ]);
+        $avis = Avis::create([
+            'auteur_id' => auth()->user()->id,
+            'logement_id' => $logement->id,
+            'commentaire' => $request->commentaire,
+            'verifie' => false,
+        ]);
 
-    // Notifier le propriétaire
-    if ($logement->proprietaire) {
-        $logement->proprietaire->notify(new NouvelAvis($avis));
+        // Notifier le propriétaire
+        if ($logement->proprietaire) {
+            $logement->proprietaire->notify(new NouvelAvis($avis));
+        }
+
+        return redirect()->back()->with('success', "Merci pour votre avis !");
     }
-
-    return redirect()->back()->with('success', "Merci pour votre avis !");
-}
 
 
 
@@ -51,4 +51,5 @@ class AvisController extends Controller
 
         return view('avis.index', compact('avis'));
     }
+    
 }

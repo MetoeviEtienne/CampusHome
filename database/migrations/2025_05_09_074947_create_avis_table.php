@@ -16,8 +16,7 @@ return new class extends Migration
             $table->foreignId('auteur_id')->constrained('users');
             $table->foreignId('logement_id')->constrained('logements');
             //$table->foreignId('reservation_id')->nullable(false)->change();
-            //$table->integer('note'); // 1-5
-            $table->unsignedTinyInteger('note'); // entre 1 et 5
+            //$table->integer('note'); // 1-
             $table->text('commentaire');
             $table->boolean('verifie')->default(false);
             $table->timestamps();

@@ -4,9 +4,15 @@
     <!-- Logo + Nom utilisateur -->
     <div class="flex-shrink-0 mb-2 sm:mb-0">
       <div class="text-2xl font-bold">CampusHome</div>
-      @auth
-        <div class="text-sm font-light text-white">Bienvenue, {{ Auth::user()->name }}</div>
-      @endauth
+     @auth
+      <div class="text-sm font-light text-white">
+          Bienvenue, 
+          <a href="{{ route('profile.edit') }}" class="hover:text-gray-300">
+              {{ Auth::user()->name }}
+          </a>
+      </div>
+    @endauth
+
     </div>
 
     <!-- Bouton hamburger visible sur mobile (sm:hidden) -->
@@ -28,6 +34,11 @@
       <a href="{{ route('etudiant.reservations.index') }}"
          class="text-white px-4 py-2 rounded-md text-sm font-semibold border border-white hover:bg-white hover:text-blue-600 transition whitespace-nowrap">
         Mes réservations
+      </a>
+
+      <a href="{{ route('colocations.index') }}"
+         class="text-white px-4 py-2 rounded-md text-sm font-semibold border border-white hover:bg-white hover:text-blue-600 transition whitespace-nowrap">
+         Voir annonce ({{ $nbAnnonces }})
       </a>
 
       <form method="POST" action="{{ route('logout') }}">
@@ -52,6 +63,11 @@
       <a href="{{ route('etudiant.reservations.index') }}"
          class="text-white px-3 py-2 rounded-md text-sm font-semibold border border-white hover:bg-white hover:text-blue-600 transition whitespace-nowrap w-full text-center">
         Mes réservations
+      </a>
+
+      <a href="{{ route('colocations.index') }}"
+          class="text-white px-3 py-2 rounded-md text-sm font-semibold border border-white hover:bg-white hover:text-blue-600 transition whitespace-nowrap w-full text-center">
+          Voir annonce ({{ $nbAnnonces }})
       </a>
 
       <form method="POST" action="{{ route('logout') }}" class="w-full">

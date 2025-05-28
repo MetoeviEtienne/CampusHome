@@ -148,11 +148,34 @@ class LogementController extends Controller
     }
 
     // Afficher les détails d'un logement
-    public function show($id)
-        {
-            $logement = Logement::with(['photos', 'proprietaire'])->findOrFail($id);
+    // public function show($id)
+    //     {
+    //         $logement = Logement::with(['photos', 'proprietaire'])->findOrFail($id);
 
-            return view('etudiants.logements.show', compact('logement'));
-        }
+    //         return view('etudiants.logements.show', compact('logement'));
+    //     }
+
+    // Methode pour afficher les avis e commentaire
+    public function show($id)
+    {
+        $logement = Logement::with(['photos', 'proprietaire'])->findOrFail($id);
+
+        $reservation = $logement->reservations()
+            ->where('etudiant_id', auth()->id())
+            ->latest()
+            ->first();
+
+        $avancePayee = $reservation && $reservation->paiements
+            ->where('type', 'avance')
+            ->where('statut', 'payé')
+            ->isNotEmpty();
+
+        // Charger les avis avec les auteurs
+        $avis = $logement->avis()->with('auteur')->latest()->get();
+
+        return view('etudiants.logements.show', compact('logement', 'reservation', 'avancePayee', 'avis'));
+    }
 
 }
+
+

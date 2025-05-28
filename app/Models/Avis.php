@@ -9,7 +9,7 @@ class Avis extends Model
     use HasFactory;
 
     protected $fillable = [
-        'auteur_id', 'logement_id', 'note', 'commentaire', 'verifie',
+        'auteur_id', 'logement_id', 'commentaire', 'verifie',
     ];
 
     // Relation avec l'utilisateur (auteur de l'avis)

@@ -51,34 +51,23 @@
                         <span class="mt-2 inline-block text-sm text-red-600 font-semibold">Déjà réservé</span>
                     @endif
 
-                   {{-- Calcul de la note moyenne --}}
-                    @php
-                        $noteMoyenne = round($logement->avis->avg('note') ?? 0);
-                    @endphp
-
-                    {{-- Étoiles de notation --}}
-                    <div class="mt-4 relative flex gap-1 text-gray-300">
+                  {{-- Étoiles de notation interactives --}}
+                    <div class="mt-4 relative flex gap-1 text-gray-300 etoiles-notes" data-logement="{{ $logement->id }}">
                         @for ($i = 1; $i <= 5; $i++)
-                            {{-- <form method="POST" action="{{ route('etudiant.logements.avis.store', $logement->id) }}" class="inline"> --}}
-                              <form method="POST" action="{{ route('etudiant.logements.avis.store', $logement->id) }}" class="inline">
-                                @csrf
-                                <input type="hidden" name="note" value="{{ $i }}">
-                                <button type="submit"
-                                    class="focus:outline-none text-2xl leading-none {{ $i <= $noteMoyenne ? 'text-yellow-400' : '' }}"
-                                    title="Donner {{ $i }} étoile(s)">
-                                    &#9733;
-                                </button>
-                            </form>
+                           <span class="etoile text-2xl cursor-pointer" data-note="{{ $i }}">&#9733;</span>
                         @endfor
                     </div>
 
-                    {{-- Note moyenne --}}
-                    @if($logement->avis->count())
-                        <p class="text-sm text-gray-600 mt-1">
-                            Note moyenne : {{ number_format($logement->avis->avg('note'), 1) }}/5
-                            ({{ $logement->avis->count() }} avis)
-                        </p>
-                    @endif
+                   {{-- @php
+                        $total = $logement->avisEtoiles->sum('note');
+                        $count = $logement->avisEtoiles->count();
+                        $noteMoyenne = $count > 0 ? $total / $count : 0;
+                    @endphp
+
+                    <p class="text-sm text-gray-600 mt-2" id="note-moyenne-text">
+                        Note moyenne : {{ number_format($noteMoyenne, 1) }}/5 ({{ $count }} votes)
+                    </p> --}}
+
 
 
                     <div class="mt-auto pt-4 flex flex-wrap gap-2">
@@ -147,3 +136,60 @@
 {{-- Lightbox2 JS --}}
 <script src="https://cdn.jsdelivr.net/npm/lightbox2@2/dist/js/lightbox.min.js"></script>
 @endsection
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const blocsEtoiles = document.querySelectorAll('.etoiles-notes');
+
+    blocsEtoiles.forEach(bloc => {
+        const logementId = bloc.dataset.logement;
+        let currentNote = 0;
+        const etoiles = bloc.querySelectorAll('.etoile');
+
+        etoiles.forEach(etoile => {
+            etoile.addEventListener('mouseenter', function () {
+                const note = this.dataset.note;
+                highlightStars(note);
+            });
+
+            etoile.addEventListener('mouseleave', function () {
+                highlightStars(currentNote);
+            });
+
+            etoile.addEventListener('click', function () {
+                const note = this.dataset.note;
+                currentNote = note;
+                highlightStars(note);
+                envoyerNote(note, logementId, bloc);
+            });
+        });
+
+        function highlightStars(note) {
+            etoiles.forEach(etoile => {
+                etoile.classList.toggle('text-yellow-400', etoile.dataset.note <= note);
+            });
+        }
+
+        function envoyerNote(note, logementId, bloc) {
+            fetch(`/etudiant/logements/${logementId}/noter`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ note: note })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.note_moyenne) {
+                    const noteMoyenneText = bloc.parentElement.querySelector('#note-moyenne-text');
+                    if (noteMoyenneText) {
+                        noteMoyenneText.textContent = `Note moyenne : ${data.note_moyenne}/5 (${data.total} votes)`;
+                    }
+                }
+            });
+        }
+    });
+});
+</script>

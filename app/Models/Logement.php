@@ -67,4 +67,11 @@ class Logement extends Model
         {
             return $this->hasMany(Avis::class);
         }
+    
+    // Relation de l''avis etoile
+    public function avisEtoiles()
+    {
+        return $this->hasMany(\App\Models\AvisEtoile::class);
+    }
+
 }

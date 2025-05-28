@@ -47,5 +47,11 @@ class Reservation extends Model
     {
         return $this->paiements()->where('type', 'avance')->exists();
     }
+    
+    // relation d'annonce
+    public function colocation()
+    {
+        return $this->hasOne(Colocation::class);
+    }
 
 }

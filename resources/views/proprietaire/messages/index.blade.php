@@ -3,45 +3,65 @@
 @section('title', 'Messagerie')
 
 @section('content')
-<div class="container mx-auto">
-    <h2 class="text-xl font-semibold mb-4">Messagerie</h2>
+<div class="max-w-3xl mx-auto px-4">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">📩 Messagerie</h2>
 
     @if(session('success'))
-        <div class="bg-green-100 text-green-700 p-4 rounded mb-4">{{ session('success') }}</div>
+        <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded mb-6">
+            {{ session('success') }}
+        </div>
     @endif
 
-    <div class="bg-white p-4 rounded shadow mb-8 max-h-[400px] overflow-y-auto">
+    <!-- Boîte de messages -->
+    <div class="bg-white p-5 rounded-lg shadow mb-8 max-h-[400px] overflow-y-auto space-y-4">
         @forelse ($messages as $message)
-            <div class="mb-3 p-3 border rounded @if($message->expediteur_id == auth()->id()) bg-blue-50 @else bg-gray-100 @endif">
-                <strong>De : {{ $message->expediteur->name }}</strong> <br>
-                <small class="text-gray-500">{{ $message->created_at->diffForHumans() }}</small>
-                <p class="mt-1">{{ $message->contenu }}</p>
+            <div class="flex @if($message->expediteur_id == auth()->id()) justify-end @else justify-start @endif">
+                <div class="max-w-[80%] p-4 rounded-lg shadow 
+                    @if($message->expediteur_id == auth()->id()) bg-blue-100 text-right @else bg-gray-100 text-left @endif">
+                    <p class="text-sm font-semibold text-gray-700">
+                        De : {{ $message->expediteur->name }}
+                    </p>
+                    <p class="text-sm text-gray-500 mb-1">
+                        {{ $message->created_at->diffForHumans() }}
+                    </p>
+                    <p class="text-gray-800">{{ $message->contenu }}</p>
+                </div>
             </div>
         @empty
-            <p>Aucun message.</p>
+            <p class="text-gray-500 text-center italic">Aucun message pour l'instant.</p>
         @endforelse
     </div>
 
-    <form action="{{ route('messages.store') }}" method="POST" class="bg-white p-4 rounded shadow">
+    <!-- Formulaire d'envoi -->
+    <form action="{{ route('messages.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow space-y-5">
         @csrf
-        <div class="mb-4">
-            <label for="destinataire_id" class="block mb-1">Destinataire</label>
-            <select name="destinataire_id" id="destinataire_id" class="w-full border rounded p-2" required>
+
+        <div>
+            <label for="destinataire_id" class="block text-sm font-medium text-gray-700 mb-1">Destinataire</label>
+            <select name="destinataire_id" id="destinataire_id" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 <option value="">-- Choisir un destinataire --</option>
                 @foreach ($destinataires as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                 @endforeach
             </select>
-            @error('destinataire_id') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
+            @error('destinataire_id')
+                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
-        <div class="mb-4">
-            <label for="contenu" class="block mb-1">Message</label>
-            <textarea name="contenu" id="contenu" rows="4" class="w-full border rounded p-2" required></textarea>
-            @error('contenu') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
+        <div>
+            <label for="contenu" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+            <textarea name="contenu" id="contenu" rows="4" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" required></textarea>
+            @error('contenu')
+                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Envoyer</button>
+        <div class="text-right">
+            <button type="submit" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg transition">
+                Envoyer
+            </button>
+        </div>
     </form>
 </div>
 @endsection

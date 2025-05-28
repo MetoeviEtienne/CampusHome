@@ -27,7 +27,8 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Proprietaire\NotificationController;
 use App\Http\Controllers\Etudiant\MaintenanceEtudiantController;
-
+use App\Http\Controllers\Etudiant\ColocationController;
+use App\Http\Controllers\AvisEtoileController;
 
 Route::get('/', function () {
     return view('campushome');
@@ -313,3 +314,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/etudiants/maintenance/{logement}/create', [MaintenanceEtudiantController::class, 'create'])->name('etudiants.maintenance.create');
     Route::post('/etudiants/maintenance/{logement}', [MaintenanceEtudiantController::class, 'store'])->name('etudiants.maintenance.store');
 });
+
+//Route pour les annonces de recherche de colocataire
+Route::middleware(['auth'])->prefix('colocations')->group(function () {
+    Route::get('/create/{reservation}', [ColocationController::class, 'create'])->name('colocations.create');
+    Route::post('/store/{reservation}', [ColocationController::class, 'store'])->name('colocations.store');
+});
+Route::get('/colocations', [ColocationController::class, 'index'])->name('colocations.index');
+
+// Routes pour les avis étoiles
+Route::post('/etudiant/logements/{logement}/noter', [AvisEtoileController::class, 'noter'])->name('etudiant.logements.notes.store');
