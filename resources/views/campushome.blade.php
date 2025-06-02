@@ -73,11 +73,10 @@
                         <h1 class="text-4xl md:text-6xl font-bold mb-4">Plateforme de recherche de location des étudiants</h1>
                         <p class="text-lg md:text-xl mb-8">Trouvez votre logement étudiant idéal et simplifiez votre vie académique.</p>
                         <div class="space-x-4">
-<a href="{{ route('contact.index') }}" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">
-    Contactez-nous
-</a>
-
-                            <a href="#" class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">A savoir</a>
+                            <a href="{{ route('contact.index') }}" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">
+                                Contactez-nous
+                            </a>
+                            <a href="{{ route('a-savoir') }}" class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">A savoir plus</a>
                         </div>
                     </div>
                 </div>
@@ -91,8 +90,10 @@
                         <h1 class="text-4xl md:text-6xl font-bold mb-4">Votre maison proche de chez vous</h1>
                         <p class="text-lg md:text-xl mb-8">Des logements adaptés à vos besoins et à votre budget.</p>
                         <div class="space-x-4">
-                           <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">Contactez-nous</a>
-                            <a href="#" class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">A savoir</a>
+                           <a href="{{ route('contact.index') }}" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">
+                                Contactez-nous
+                            </a>
+                            <a href="{{ route('a-savoir') }}"  class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">A savoir plus</a>
                         </div>
                     </div>
                 </div>
@@ -105,8 +106,10 @@
                         <h1 class="text-4xl md:text-6xl font-bold mb-4">Votre maison proche de chez vous</h1>
                         <p class="text-lg md:text-xl mb-8">Des logements adaptés à vos besoins et à votre budget.</p>
                         <div class="space-x-4">
-                            <a href="#" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">Contactez-nous</a>
-                            <a href="#" class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">A savoir</a>
+                            <a href="{{ route('contact.index') }}" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">
+                                Contactez-nous
+                            </a>
+                            <a href="{{ route('a-savoir') }}"  class="bg-transparent border border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600">A savoir plus</a>
                         </div>
                     </div>
                 </div>

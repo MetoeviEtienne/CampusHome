@@ -34,6 +34,15 @@ class Logement extends Model
         {
             return $this->hasMany(\App\Models\Reservation::class, 'logement_id');
         }
+
+   public function estReserveOuLoue()
+    {
+        return $this->reservations()
+            ->whereIn('statut', ['en_attente', 'approuvée'])
+            ->where('date_fin', '>=', now())
+            ->exists();
+    }
+
         // Relation avec le modèle User
 
     public function photos()

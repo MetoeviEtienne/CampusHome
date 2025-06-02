@@ -72,7 +72,37 @@ class ReservationController extends Controller
             return back()->with('success', 'Réservation approuvée avec succès et contrat généré.');
         }
 
-    // public function approver(Reservation $reservation)
+    
+    public function rejeter(Reservation $reservation)
+    {
+        if ($reservation->logement->proprietaire_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $reservation->update(['statut' => 'rejetee']);
+
+        // Notification
+        $reservation->etudiant->notify(new ReservationRejected($reservation));
+
+        return back()->with('success', 'Réservation rejetée.');
+    }
+
+    public function destroy(Reservation $reservation)
+    {
+        // Vérifie que le logement appartient au propriétaire connecté
+        if ($reservation->logement->proprietaire_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $reservation->delete();
+
+        return redirect()->back()->with('success', 'Réservation supprimée avec succès.');
+    }
+}
+
+
+
+// public function approver(Reservation $reservation)
     // {
     //     if ($reservation->logement->proprietaire_id !== auth()->id()) {
     //         abort(403);
@@ -128,30 +158,3 @@ class ReservationController extends Controller
 
     //     return back()->with('success', 'Réservation approuvée avec succès.');
     // }
-
-    public function rejeter(Reservation $reservation)
-    {
-        if ($reservation->logement->proprietaire_id !== auth()->id()) {
-            abort(403);
-        }
-
-        $reservation->update(['statut' => 'rejetee']);
-
-        // Notification
-        $reservation->etudiant->notify(new ReservationRejected($reservation));
-
-        return back()->with('success', 'Réservation rejetée.');
-    }
-
-    public function destroy(Reservation $reservation)
-    {
-        // Vérifie que le logement appartient au propriétaire connecté
-        if ($reservation->logement->proprietaire_id !== auth()->id()) {
-            abort(403);
-        }
-
-        $reservation->delete();
-
-        return redirect()->back()->with('success', 'Réservation supprimée avec succès.');
-    }
-}

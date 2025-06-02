@@ -113,6 +113,52 @@ class PaiementController extends Controller
 
             return $pdf->download('recu-paiement-'.$paiement->id.'.pdf');
         }
+    
+    // Méthode pour afficher l'historique des paiements
+    public function index()
+    {
+        $paiements = Paiement::with('reservation.etudiant', 'reservation.logement.proprietaire')->latest()->paginate(10);
+        return view('admin.paiements.index', compact('paiements'));
+    }
+
+    // Méthode pour trier les paiements par propriétaire
+    public function indexParProprietaire()
+    {
+        $proprietaireId = auth()->id(); // supposé connecté
+        $paiements = \App\Models\Paiement::whereHas('reservation.logement', function ($query) use ($proprietaireId) {
+            $query->where('proprietaire_id', $proprietaireId);
+        })->with('reservation.etudiant', 'reservation.logement')
+        ->latest()
+        ->paginate(10);
+
+        return view('proprietaire.paiements.index', compact('paiements'));
+    }
+
+    // Méthode pour afficher le reçu de paiement
+    public function afficherRecu(Paiement $paiement)
+    {
+        $path = storage_path('app/public/' . $paiement->quittance);
+
+        if (!file_exists($path)) {
+            abort(404, 'Fichier introuvable');
+        }
+
+        return response()->file($path); // ou ->download($path) pour forcer le téléchargement
+    }
+
+    // Méthode pour supprimer les paiements
+    public function destroy(Paiement $paiement)
+    {
+        // Supprimer le fichier PDF du reçu s’il existe
+        if ($paiement->quittance && Storage::exists('public/' . $paiement->quittance)) {
+            Storage::delete('public/' . $paiement->quittance);
+        }
+
+        $paiement->delete();
+
+        return redirect()->route('admin.paiements.index')->with('success', 'Paiement supprimé avec succès.');
+    }
+
 }
 
 

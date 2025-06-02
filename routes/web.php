@@ -30,6 +30,7 @@ use App\Http\Controllers\Etudiant\MaintenanceEtudiantController;
 use App\Http\Controllers\Etudiant\ColocationController;
 use App\Http\Controllers\AvisEtoileController;
 
+
 Route::get('/', function () {
     return view('campushome');
 });
@@ -214,7 +215,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(functi
     Route::patch('avis/{avis}/verifier', [\App\Http\Controllers\Admin\AvisController::class, 'verifier'])->name('avis.verifier');
 });
 
-
 // Routes pour les propriétaires
 Route::prefix('proprietaire')->name('proprietaire.')->group(function () {
     Route::get('/avis', [ProprietaireAvisController::class, 'index'])->name('avis.index');
@@ -245,8 +245,8 @@ Route::post('/paiement/momo', [PaiementController::class, 'payer'])->name('paiem
 Route::post('/paiement/momo/callback', [PaiementController::class, 'callback'])->name('paiement.momo.callback');
 
 // Route pour le formulaire de contact
-Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+ Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+ Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
 
@@ -324,3 +324,47 @@ Route::get('/colocations', [ColocationController::class, 'index'])->name('coloca
 
 // Routes pour les avis étoiles
 Route::post('/etudiant/logements/{logement}/noter', [AvisEtoileController::class, 'noter'])->name('etudiant.logements.notes.store');
+
+// route pour la suppression de l'annonce de colocation
+Route::delete('/etudiant/colocations/{id}', [ColocationController::class, 'destroy'])->name('etudiant.colocations.destroy');
+
+
+
+
+// Routes pour la gestion des réservations par l'administrateur
+Route::prefix('admin')->middleware(['auth:admin'])->name('admin.')->group(function () {
+    Route::get('/reservations', [\App\Http\Controllers\Admin\ReservationController::class, 'index'])->name('reservations.index');
+    Route::post('/reservations/{reservation}/approve', [\App\Http\Controllers\Admin\ReservationController::class, 'approver'])->name('reservations.approve');
+    Route::post('/reservations/{reservation}/reject', [\App\Http\Controllers\Admin\ReservationController::class, 'rejeter'])->name('reservations.reject');
+    Route::delete('/reservations/{reservation}', [\App\Http\Controllers\Admin\ReservationController::class, 'destroy'])->name('reservations.destroy');
+});
+
+// // Routes pour gestion des reservations par le pro
+// Route::post('/reservations/{reservation}/approve', [\App\Http\Controllers\Shared\ReservationSyncController::class, 'approveFromProprietaire'])->name('proprietaire.reservations.approve');
+// Route::post('/reservations/{reservation}/reject', [\App\Http\Controllers\Shared\ReservationSyncController::class, 'rejectFromProprietaire'])->name('proprietaire.reservations.reject');
+
+
+// Routes pour voir les paiements par l'administrateur
+Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('paiements', [PaiementController::class, 'index'])->name('paiements.index');
+});
+
+// Route pour trier les proprietaire
+Route::get('/proprietaire/paiements', [PaiementController::class, 'indexParProprietaire'])->name('proprietaire.paiements');
+
+// Route pour supprimer un paiement au niveau de l'administrateur
+Route::delete('/admin/paiements/{paiement}', [PaiementController::class, 'destroy'])->name('admin.paiements.destroy');
+
+// routes pour la gestion des contrats par l'administrateur
+Route::get('/admin/contrats', [App\Http\Controllers\Admin\ContratController::class, 'index'])->name('admin.contrats.index');
+
+// Route pour afficher les contacts
+Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Autres routes...
+    Route::get('admin/contacts', [App\Http\Controllers\Admin\ContactController::class, 'index'])->name('contact.index');
+    
+});
+Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+
+// Route pour la documentation de la plateforme 
+Route::get('/a-savoir', [App\Http\Controllers\PageController::class, 'aSavoir'])->name('a-savoir');

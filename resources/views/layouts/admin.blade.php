@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panneau Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -25,7 +26,7 @@
     <button onclick="toggleSidebar()" class="text-gray-600 focus:outline-none">
         ☰
     </button>
-    <h1 class="text-lg font-semibold text-blue-600">CampusHome</h1>
+    {{-- <h1 class="text-lg font-semibold text-blue-600">CampusHome</h1> --}}
     <form action="{{ route('logout') }}" method="POST">
         @csrf
         <button class="text-red-500 text-sm font-semibold">Déconnexion</button>
@@ -61,9 +62,15 @@
                         📜 Historique
                     </a>
                 </li>
+                 <li>
+                    <a href="{{ route('admin.reservations.index') }}" 
+                        class="block px-6 py-3 text-gray-700 hover:bg-blue-100 hover:text-blue-600 font-medium rounded transition">
+                            📅 Réservations
+                    </a>
+                </li>
                 <li>
-                <a href="#" class="block px-6 py-3 text-gray-700 hover:bg-blue-100 hover:text-blue-600 font-medium rounded transition">
-                    📬 Contacts
+                <a href="{{ route('admin.contact.index') }}" class="block px-6 py-3 text-gray-700 hover:bg-blue-100 hover:text-blue-600 font-medium rounded transition">
+                    📬 Messages
                 </a>
              </li>
             </ul>

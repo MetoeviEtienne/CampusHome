@@ -108,8 +108,9 @@
             <h4 class="text-lg font-semibold mb-4">Liens rapides</h4>
             <ul class="space-y-2 text-sm">
                 <li><a href="{{ route('dashboard') }}" class="hover:underline hover:text-gray-200">Accueil</a></li>
-                <li><a href="{{ route('etudiant.logements.index') }}" class="hover:underline hover:text-gray-200">Logements</a></li>
+                {{-- <li><a href="{{ route('etudiant.logements.index') }}" class="hover:underline hover:text-gray-200">Logements</a></li> --}}
                 <li><a href="{{ route('etudiant.reservations.index') }}" class="hover:underline hover:text-gray-200">Mes réservations</a></li>
+                 <li><a href="{{ route('colocations.index') }}" class="hover:underline hover:text-gray-200"> Voir annonce ({{ $nbAnnonces }})</a></li> 
                 <li>
                     <a href="{{ route('logout') }}" 
                        onclick="event.preventDefault(); document.getElementById('logout-form-footer').submit();" 
@@ -122,8 +123,8 @@
         <!-- Contact -->
         <div>
             <h4 class="text-lg font-semibold mb-4">Contactez-nous</h4>
-            <p class="text-sm opacity-80">123 Rue de l'Université<br>Ville, Pays</p>
-            <p class="mt-2 text-sm opacity-80">Email : contact@campushome.com</p>
+            <p class="text-sm opacity-80">Abtasi<br>Cotonou, Bénin</p>
+            <p class="mt-2 text-sm opacity-80">Email : contactabtsi@gmail.com</p>
             <p class="mt-1 text-sm opacity-80">Téléphone : +229 00 00 00 00</p>
         </div>
     </div>

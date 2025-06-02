@@ -7,14 +7,14 @@
     .bubble {
         position: absolute;
         border-radius: 9999px;
-        opacity: 0.15;
+        opacity: 0.5;
         animation: float 8s ease-in-out infinite;
     }
 
     @keyframes float {
-        0%   { transform: translateY(0px) translateX(0px) scale(1); }
+        0%   { transform: translateY(0px) translateX(0px) scale(10); }
         50%  { transform: translateY(-30px) translateX(10px) scale(1.1); }
-        100% { transform: translateY(0px) translateX(0px) scale(1); }
+        100% { transform: translateY(0px) translateX(0px) scale(10); }
     }
 </style>
 

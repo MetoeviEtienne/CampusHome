@@ -1,4 +1,4 @@
-@extends('layouts.etudiant')
+@extends('layouts.naveshow')
 
 @section('content')
 <div class="max-w-xl mx-auto mt-12 px-6 py-8 bg-white rounded-xl shadow-lg">

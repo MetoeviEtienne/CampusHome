@@ -1,11 +1,3 @@
-@php
-    $reservation = $logement->reservations()
-        ->where('etudiant_id', auth()->id())
-        ->latest()
-        ->first();
-    $avancePayee = $reservation && $reservation->paiements->where('type', 'avance')->where('statut', 'payé')->isNotEmpty();
-@endphp
-
 @extends('layouts.naveshow')
 
 @section('title', 'Détails du logement')
@@ -65,41 +57,69 @@
             </a>
 
             <div class="flex flex-col gap-3 w-full md:w-auto">
-                @if (!$reservation || in_array($reservation->statut, ['rejetée', 'annulée']))
-                    <a href="{{ route('etudiant.reservations.create', $logement) }}"
-                       class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-center font-medium transition-all duration-300">
-                        📅 Réserver ce logement
-                    </a>
-                @elseif ($reservation->statut === 'approuvée')
-                    <a href="{{ route('colocations.create', $reservation->id) }}"
-                       class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg text-center font-medium transition-all duration-300">
-                        🤝 Rechercher un colocataire
-                    </a>
-                    @if ($avancePayee)
-                        <div class="bg-green-600 text-white px-6 py-3 rounded-lg text-center font-semibold">
-                            🏠 Déjà loué
-                        </div>
-                        <a href="{{ route('etudiants.maintenance.create', $reservation->id) }}"
-                           class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg text-center font-medium transition-all duration-300">
-                            🛠️ Demander maintenance
+                @php
+                    // Récupérer la dernière réservation de l'étudiant pour ce logement
+                    $reservation = $logement->reservations()
+                        ->where('etudiant_id', auth()->id())
+                        ->latest()
+                        ->first();
+
+                    // Vérifier si une avance a été payée pour cette réservation
+                    $avancePayee = $reservation && $reservation->paiements
+                        ->where('type', 'avance')
+                        ->where('statut', 'payé')
+                        ->isNotEmpty();
+
+                    // Vérifier si le logement est déjà réservé (approuvé) par un autre étudiant
+                    $estReserveParAutre = $logement->reservations()
+                        ->where('statut', 'approuvée')
+                        ->where('etudiant_id', '!=', auth()->id())
+                        ->exists();
+                @endphp
+
+                @if ($estReserveParAutre)
+                    <div class="bg-red-600 text-white px-6 py-3 rounded-lg text-center font-semibold">
+                        🔒 Indisponible
+                    </div>
+
+                @else
+                    @if (!$reservation || in_array($reservation->statut, ['rejetée', 'annulée']))
+                        <a href="{{ route('etudiant.reservations.create', $logement) }}"
+                           class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-center font-medium transition-all duration-300">
+                            📅 Réserver ce logement
                         </a>
+                    @elseif ($reservation->statut === 'approuvée')
+                        <a href="{{ route('colocations.create', $reservation->id) }}"
+                           class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg text-center font-medium transition-all duration-300">
+                            🤝 Rechercher un colocataire
+                        </a>
+                        @if ($avancePayee)
+                            <div class="bg-green-600 text-white px-6 py-3 rounded-lg text-center font-semibold">
+                                🏠 Déjà loué
+                            </div>
+                            <a href="{{ route('etudiants.maintenance.create', $reservation->id) }}"
+                               class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg text-center font-medium transition-all duration-300">
+                                🛠️ Demander maintenance
+                            </a>
+                        @else
+                            <div class="bg-gray-200 text-gray-600 px-6 py-3 rounded-lg text-center">
+                                🔒 Réservé
+                            </div>
+                        @endif
                     @else
                         <div class="bg-gray-200 text-gray-600 px-6 py-3 rounded-lg text-center">
                             🔒 Déjà réservé
                         </div>
                     @endif
-                @else
-                    <div class="bg-gray-200 text-gray-600 px-6 py-3 rounded-lg text-center">
-                        🔒 Déjà réservé
-                    </div>
                 @endif
             </div>
         </div>
     </div>
 </div>
+
 {{-- AVIS DES ÉTUDIANTS --}}
 @if($avis->count())
-    <div class="mt-10 bg-white rounded-2xl shadow-lg p-8">
+    <div class="mt-10 bg-white rounded-2xl shadow-lg p-8 max-w-6xl mx-auto">
         <h2 class="text-2xl font-semibold text-gray-700 mb-6">Avis des étudiants</h2>
         <div class="space-y-6">
             @foreach($avis as $commentaire)

@@ -75,4 +75,19 @@ class ColocationController extends Controller
         return view('etudiants.colocations.index', compact('colocations', 'nbAnnonces'));
     }
 
+    // Supprimer une annonce de colocation
+    public function destroy($id)
+    {
+        $colocation = Colocation::findOrFail($id);
+
+        // Vérifier si l'utilisateur est bien le propriétaire
+        if ($colocation->reservation->etudiant_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $colocation->delete();
+
+        return redirect()->back()->with('success', 'Annonce supprimée avec succès.');
+    }
+
 }

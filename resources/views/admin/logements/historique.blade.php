@@ -3,42 +3,73 @@
 @section('title', 'Historique des logements validés et rejetés')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <h2 class="text-2xl font-bold mb-6">Historique des logements validés ou rejetés</h2>
+<div class="container mx-auto p-6 max-w-7xl">
+
+    <h2 class="text-3xl font-extrabold mb-8 text-center text-gray-800">
+        Historique des logements validés ou rejetés
+    </h2>
 
     @forelse($proprietaires as $proprietaire)
-        <div class="mb-8">
-            <h3 class="text-xl font-semibold text-blue-700 mb-2">Propriétaire : {{ $proprietaire->name }}</h3>
+        <section class="mb-12">
+            <h3 class="text-2xl font-semibold text-blue-700 mb-6 border-b border-blue-300 pb-2">
+                Propriétaire : {{ $proprietaire->name }}
+            </h3>
 
-            @foreach($proprietaire->logements as $logement)
-                <div class="bg-white rounded-2xl shadow p-4 mb-4">
-                    <h4 class="text-lg font-semibold">{{ $logement->titre }}</h4>
+            <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                @foreach($proprietaire->logements as $logement)
+                    <article class="bg-white rounded-xl shadow-md hover:shadow-lg transition p-5 flex flex-col">
+                        
+                        <h4 class="text-xl font-semibold mb-3 truncate" title="{{ $logement->titre }}">
+                            {{ $logement->titre }}
+                        </h4>
 
-                    <!-- Photos -->
-                    <div class="mb-3 overflow-x-auto flex gap-2">
-                        @foreach($logement->photos as $photo)
-                            <img src="{{ asset('storage/' . $photo->chemin) }}" alt="Photo du logement" class="w-32 h-32 object-cover rounded">
-                        @endforeach
-                    </div>
+                        <!-- Carrousel photos scrollable -->
+                        <div class="flex space-x-3 overflow-x-auto mb-4 no-scrollbar">
+                            @foreach($logement->photos as $photo)
+                                <img 
+                                    src="{{ asset('storage/' . $photo->chemin) }}" 
+                                    alt="Photo du logement" 
+                                    class="w-28 h-28 object-cover rounded-lg flex-shrink-0"
+                                    loading="lazy"
+                                >
+                            @endforeach
+                        </div>
 
-                    <p><strong>Adresse:</strong> {{ $logement->adresse }}</p>
-                    <p><strong>Type:</strong> {{ ucfirst($logement->type) }}</p>
-                    <p><strong>Loyer:</strong> {{ number_format($logement->loyer, 0, ',', ' ') }} FCFA</p>
-                    <p>
-                        <strong>Statut:</strong>
-                        @if($logement->valide)
-                            <span class="text-green-600 font-bold">Validé</span>
-                        @elseif($logement->etat === 'rejeté')
-                            <span class="text-red-600 font-bold">Rejeté</span>
-                        @else
-                            <span class="text-gray-600">Inconnu</span>
-                        @endif
-                    </p>
-                </div>
-            @endforeach
-        </div>
+                        <div class="flex flex-col gap-1 flex-grow text-gray-700 text-sm">
+                            <p><span class="font-semibold">Adresse :</span> {{ $logement->adresse }}</p>
+                            <p><span class="font-semibold">Type :</span> {{ ucfirst($logement->type) }}</p>
+                            <p><span class="font-semibold">Loyer :</span> {{ number_format($logement->loyer, 0, ',', ' ') }} FCFA</p>
+                        </div>
+
+                        <div class="mt-4">
+                            <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold
+                                {{ $logement->valide ? 'bg-green-100 text-green-800' : ($logement->etat === 'rejeté' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-700') }}">
+                                @if($logement->valide)
+                                    Validé
+                                @elseif($logement->etat === 'rejeté')
+                                    Rejeté
+                                @else
+                                    Inconnu
+                                @endif
+                            </span>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        </section>
     @empty
-        <p class="text-gray-500">Aucun logement validé ou rejeté pour le moment.</p>
+        <p class="text-center text-gray-500 text-lg mt-10">Aucun logement validé ou rejeté pour le moment.</p>
     @endforelse
 </div>
+
+<style>
+  /* Masquer la scrollbar mais garder le scroll */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
 @endsection
