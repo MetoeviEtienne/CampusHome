@@ -110,11 +110,14 @@
                 <div class="p-5 flex flex-col flex-grow">
                     <h4 class="font-bold text-lg text-gray-900 truncate">{{ $logement->titre }}</h4>
                     <p class="text-sm text-gray-600 truncate">{{ $logement->adresse }}</p>
+                    <p class="text-sm text-gray-600 truncate">{{ $logement->quartier }}</p>
                     <p class="mt-2 text-blue-700 font-semibold text-lg">
                         {{ number_format($logement->loyer, 0, ',', ' ') }} FCFA / mois
                     </p>
 
                     <div class="mt-2 text-sm text-gray-700 space-y-1 flex-grow">
+                        <p><strong>Numero de la maison :</strong> {{ $logement->numMaison }}</p>
+                        <p><strong>Numero de la chambre :</strong> {{ $logement->numChambre }}</p>
                         <p><strong>Propriétaire :</strong> {{ $logement->proprietaire->name }}</p>
                         <p><strong>Téléphone :</strong> {{ $logement->proprietaire->phone ?? 'Non renseigné' }}</p>
                         <p><strong>Description :</strong> <span class="block mt-1 text-gray-600 leading-relaxed">{{ Str::limit($logement->description, 120) }}</span></p>

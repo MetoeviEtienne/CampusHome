@@ -29,12 +29,14 @@
                             >
                         @endforeach
                     </div>
-
                     <div class="flex flex-col gap-1 text-gray-700 text-sm mb-4 flex-grow">
                         <p><span class="font-semibold">Adresse :</span> {{ $logement->adresse }}</p>
+                        <p><span class="font-semibold">Quartier :</span> {{ $logement->quartier }}</p>
                         <p><span class="font-semibold">Type :</span> {{ ucfirst($logement->type) }}</p>
                         <p><span class="font-semibold">Loyer :</span> {{ number_format($logement->loyer, 0, ',', ' ') }} FCFA</p>
                         <p><span class="font-semibold">Propriétaire :</span> {{ $logement->proprietaire->name }}</p>
+                        <p><span class="font-semibold">Numero de la Chambre :</span> {{ $logement->numChambre }}</p>
+                        <p><span class="font-semibold">Numero de la maison :</span> {{ $logement->numMaison }}</p>
 
                         <p>
                             <span class="font-semibold">Pièce d'identité :</span>

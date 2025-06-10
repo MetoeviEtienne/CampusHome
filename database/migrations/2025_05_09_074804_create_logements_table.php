@@ -16,11 +16,14 @@ return new class extends Migration
             $table->foreignId('proprietaire_id')->constrained('users');
             $table->string('titre');
             $table->string('adresse');
-            $table->enum('type', ['studio', 'appartement', 'chambre', 'colocation']);
-            $table->integer('nombre_chambres');
+             $table->string('quartier');
+            $table->enum('type', ['entrée couchée', 'chambre']);
+            $table->integer('numChambre');
+            // $table->integer('nombre_chambres');
             $table->decimal('superficie', 8, 2);
             $table->decimal('loyer', 10, 2);
-            $table->decimal('charges', 10, 2)->default(0);
+            $table->string('numMaison');
+            // $table->decimal('charges', 10, 2)->default(0);
             $table->text('description')->nullable();
             $table->date('disponibilite');
             $table->string('piece_identite_path')->nullable();

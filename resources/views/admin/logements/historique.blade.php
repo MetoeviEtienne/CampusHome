@@ -37,8 +37,11 @@
 
                         <div class="flex flex-col gap-1 flex-grow text-gray-700 text-sm">
                             <p><span class="font-semibold">Adresse :</span> {{ $logement->adresse }}</p>
+                            <p><span class="font-semibold">Quartier :</span> {{ $logement->quartier }}</p>
                             <p><span class="font-semibold">Type :</span> {{ ucfirst($logement->type) }}</p>
                             <p><span class="font-semibold">Loyer :</span> {{ number_format($logement->loyer, 0, ',', ' ') }} FCFA</p>
+                            <p><span class="font-semibold">Numero de la Chambre :</span> {{ $logement->numChambre }}</p>
+                            <p><span class="font-semibold">Numero de la maison :</span> {{ $logement->numMaison }}</p>
                         </div>
 
                         <div class="mt-4">

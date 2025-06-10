@@ -31,13 +31,16 @@
             {{-- Colonne 1 --}}
             <div class="space-y-3">
                 <p><span class="font-medium">📍 Adresse :</span> {{ $logement->adresse }}</p>
+                <p><span class="font-semibold">Quartier :</span> {{ $logement->quartier }}</p>
                 <p><span class="font-medium">🏠 Type :</span> {{ ucfirst($logement->type) }}</p>
-                <p><span class="font-medium">🛏️ Chambres :</span> {{ $logement->nombre_chambres }}</p>
+                {{-- <p><span class="font-medium">🛏️ Chambres :</span> {{ $logement->nombre_chambres }}</p> --}}
                 <p><span class="font-medium">📐 Superficie :</span> {{ $logement->superficie }} m²</p>
                 <p><span class="font-medium">💰 Loyer :</span> {{ number_format($logement->loyer, 0, ',', ' ') }} FCFA/mois</p>
                 <p><span class="font-medium">📅 Disponible à partir du :</span> {{ \Carbon\Carbon::parse($logement->disponibilite)->format('d/m/Y') }}</p>
                 <p><span class="font-medium">👤 Propriétaire :</span> {{ $logement->proprietaire->name }}</p>
                 <p><span class="font-medium">📞 Téléphone :</span> {{ $logement->proprietaire->phone }}</p>
+                <p><span class="font-semibold">🏘️Numero de la Chambre :</span> {{ $logement->numChambre }}</p>
+                <p><span class="font-semibold">🏯Numero de la maison :</span> {{ $logement->numMaison }}</p>
             </div>
 
             {{-- Colonne 2 --}}

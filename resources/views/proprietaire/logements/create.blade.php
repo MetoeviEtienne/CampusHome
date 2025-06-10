@@ -48,7 +48,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="titre" class="block mb-1 font-semibold text-gray-700">Titre <span class="text-red-500">*</span></label>
-                        <input type="text" id="titre" name="titre" value="{{ old('titre') }}" required
+                        <input type="text" id="titre" name="titre" placeholder="Ex: Studio meublé à Fidjrossè" value="{{ old('titre') }}" required
                                class="w-full border border-gray-300 rounded-lg p-3 placeholder-gray-400 focus:ring-0">
                     </div>
 
@@ -59,22 +59,28 @@
                     </div>
 
                     <div>
-                        <label for="type" class="block mb-1 font-semibold text-gray-700">Type <span class="text-red-500">*</span></label>
-                        <select id="type" name="type" required
-                                class="w-full border border-gray-300 rounded-lg p-3 bg-white cursor-pointer focus:ring-0">
-                            <option value="" disabled selected>-- Sélectionner --</option>
-                            <option value="studio">Studio</option>
-                            <option value="appartement">Appartement</option>
-                            <option value="chambre">Chambre</option>
-                            <option value="colocation">Colocation</option>
-                        </select>
+                        <label for="quartier" class="block mb-1 font-semibold text-gray-700">Quartier<span class="text-red-500">*</span></label>
+                        <input type="text" id="quartier" name="quartier" value="{{ old('quartier') }}" required
+                               class="w-full border border-gray-300 rounded-lg p-3 placeholder-gray-400 focus:ring-0">
                     </div>
 
                     <div>
+                        <label for="type" class="block mb-1 font-semibold text-gray-700">Type <span class="text-red-500">*</span></label>
+                        <select id="type" name="type" required
+                                class="w-full border border-gray-300 rounded-lg p-3 bg-white cursor-pointer focus:ring-0">
+                            <option value="" disabled selected>Sélectionner</option>
+                            <option value="entrée couchée">Entrée couchée</option>
+                            {{-- <option value="appartement">Appartement</option> --}}
+                            <option value="chambre">Chambre</option>
+                            {{-- <option value="colocation">Colocation</option> --}}
+                        </select>
+                    </div>
+
+                    {{-- <div>
                         <label for="nombre_chambres" class="block mb-1 font-semibold text-gray-700">Nombre de chambres <span class="text-red-500">*</span></label>
                         <input type="number" id="nombre_chambres" name="nombre_chambres" value="{{ old('nombre_chambres') }}" required min="0"
                                class="w-full border border-gray-300 rounded-lg p-3 placeholder-gray-400 focus:ring-0">
-                    </div>
+                    </div> --}}
 
                     <div>
                         <label for="superficie" class="block mb-1 font-semibold text-gray-700">Superficie (m²) <span class="text-red-500">*</span></label>
@@ -88,11 +94,23 @@
                                class="w-full border border-gray-300 rounded-lg p-3 placeholder-gray-400 focus:ring-0">
                     </div>
 
-                    <div>
+                     <div>
+                        <label for="numMaison" class="block mb-1 font-semibold text-gray-700">Numéro de la maison<span class="text-red-500">*</span></label>
+                        <input type="text" step="0.01" id="numMaison" name="numMaison" value="{{ old('numMaison') }}" required min="0"
+                               class="w-full border border-gray-300 rounded-lg p-3 placeholder-gray-400 focus:ring-0">
+                    </div>
+
+                     <div>
+                        <label for="numChambre" class="block mb-1 font-semibold text-gray-700">Numéro de la chambre<span class="text-red-500">*</span></label>
+                        <input type="number" step="0.01" id="umChambre" name="numChambre" value="{{ old('umChambre') }}" required min="0"
+                               class="w-full border border-gray-300 rounded-lg p-3 placeholder-gray-400 focus:ring-0">
+                    </div>
+
+                    {{-- <div>
                         <label for="charges" class="block mb-1 font-semibold text-gray-700">Charges mensuelles (FCFA)</label>
                         <input type="number" step="0.01" id="charges" name="charges" value="{{ old('charges', 0) }}" min="0"
                                class="w-full border border-gray-300 rounded-lg p-3 placeholder-gray-400 focus:ring-0">
-                    </div>
+                    </div> --}}
 
                     <div>
                         <label for="disponibilite" class="block mb-1 font-semibold text-gray-700">Date de disponibilité <span class="text-red-500">*</span></label>

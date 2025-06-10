@@ -36,10 +36,16 @@
             </div>
 
             <div>
+                <label for="quartier" class="block mb-1 font-semibold text-gray-700">Quartier<span class="text-red-500">*</span></label>
+                <input type="text" id="quartier" name="quartier" value="{{ old('adresse', $logement->quartier) }}" required
+                    class="w-full border border-gray-300 rounded-lg p-3 placeholder-gray-400 focus:ring-0">
+            </div>
+
+            <div>
                 <label class="block text-gray-700 font-semibold mb-2" for="type">Type <span class="text-red-500">*</span></label>
                 <select id="type" name="type" required
                     class="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 px-4 py-2 transition duration-150">
-                    @foreach(['studio', 'appartement', 'chambre', 'colocation'] as $type)
+                    @foreach(['entrée couchée', 'chambre'] as $type)
                         <option value="{{ $type }}" @selected(old('type', $logement->type) === $type)>
                             {{ ucfirst($type) }}
                         </option>
@@ -47,11 +53,11 @@
                 </select>
             </div>
 
-            <div>
+            {{-- <div>
                 <label class="block text-gray-700 font-semibold mb-2" for="nombre_chambres">Nombre de chambres <span class="text-red-500">*</span></label>
                 <input id="nombre_chambres" type="number" name="nombre_chambres" value="{{ old('nombre_chambres', $logement->nombre_chambres) }}" required
                     class="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 px-4 py-2 transition duration-150" />
-            </div>
+            </div> --}}
 
             <div>
                 <label class="block text-gray-700 font-semibold mb-2" for="superficie">Superficie (m²) <span class="text-red-500">*</span></label>
@@ -66,10 +72,22 @@
             </div>
 
             <div>
+                <label for="numMaison" class="block mb-1 font-semibold text-gray-700">Numéro de la maison<span class="text-red-500">*</span></label>
+                <input type="text" step="0.01" id="numMaison" name="numMaison" value="{{ old('adresse', $logement->numMaison) }}" required min="0"
+                    class="w-full border border-gray-300 rounded-lg p-3 placeholder-gray-400 focus:ring-0">
+            </div>
+
+            <div>
+                <label for="numChambre" class="block mb-1 font-semibold text-gray-700">Numéro de la chambre<span class="text-red-500">*</span></label>
+                <input type="number" step="0.01" id="umChambre" name="numChambre" value="{{ old('adresse', $logement->numChambre) }}" required min="0"
+                    class="w-full border border-gray-300 rounded-lg p-3 placeholder-gray-400 focus:ring-0">
+            </div>
+            
+            {{-- <div>
                 <label class="block text-gray-700 font-semibold mb-2" for="charges">Charges (FCFA)</label>
                 <input id="charges" type="number" step="0.01" name="charges" value="{{ old('charges', $logement->charges) }}"
                     class="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 px-4 py-2 transition duration-150" />
-            </div>
+            </div> --}}
 
             <div>
                 <label class="block text-gray-700 font-semibold mb-2" for="disponibilite">Disponibilité <span class="text-red-500">*</span></label>

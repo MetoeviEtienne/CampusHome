@@ -37,14 +37,17 @@
                 <div class="p-5 flex flex-col flex-grow">
                     <h3 class="font-bold text-xl text-gray-900 mb-1 truncate">{{ $logement->titre }}</h3>
                     <p class="text-sm text-gray-600 truncate">{{ $logement->adresse }}</p>
-
+                    <p class="text-sm text-gray-600 truncate">{{ $logement->quartier }}</p>
+                    <p class="text-sm text-gray-600 truncate">{{ $logement->type }}</p>
                     <p class="text-indigo-600 font-bold text-lg mt-3">
                         {{ number_format($logement->loyer, 0, ',', ' ') }} FCFA / mois
-                    </p>
+                    </p>    
 
                     <div class="mt-2 text-gray-700 text-sm space-y-1 flex-grow">
                         <p><span class="font-semibold">Propriétaire :</span> {{ $logement->proprietaire->name }}</p>
                         <p><span class="font-semibold">Téléphone :</span> {{ $logement->proprietaire->phone ?? 'Non renseigné' }}</p>
+                        <p><span class="font-semibold">Numero de la Chambre :</span> {{ $logement->numChambre }}</p>
+                        <p><span class="font-semibold">Numero de la maison :</span> {{ $logement->numMaison }}</p>
                         <p class="mt-3"><span class="font-semibold">Description :</span> {{ Str::limit($logement->description, 120) }}</p>
                     </div>
 

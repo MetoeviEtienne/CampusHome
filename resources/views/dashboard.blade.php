@@ -40,10 +40,11 @@
                         Aucune image disponible
                     </div>
                 @endif
-
+                
                 {{-- Détails du logement --}}
                 <div class="p-5 flex flex-col flex-grow">
                     <h2 class="text-xl font-semibold text-gray-800">{{ $logement->adresse }}</h2>
+                    <h2 class="text-xl font-semibold text-gray-800">{{ $logement->quartier }}</h2>
                     <p class="text-sm text-gray-500 mb-1">{{ ucfirst($logement->type) }} • {{ $logement->superficie }} m²</p>
                     <p class="text-lg font-bold text-blue-600">{{ number_format($logement->loyer, 0, ',', ' ') }} FCFA/mois</p>
 

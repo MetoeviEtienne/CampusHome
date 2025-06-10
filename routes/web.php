@@ -368,3 +368,5 @@ Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('co
 
 // Route pour la documentation de la plateforme 
 Route::get('/a-savoir', [App\Http\Controllers\PageController::class, 'aSavoir'])->name('a-savoir');
+
+
