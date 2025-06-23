@@ -29,6 +29,8 @@ use App\Http\Controllers\Proprietaire\NotificationController;
 use App\Http\Controllers\Etudiant\MaintenanceEtudiantController;
 use App\Http\Controllers\Etudiant\ColocationController;
 use App\Http\Controllers\AvisEtoileController;
+use App\Http\Controllers\OCRController;
+use App\Http\Controllers\Admin\StatistiqueController;
 
 
 Route::get('/', function () {
@@ -370,3 +372,12 @@ Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('co
 Route::get('/a-savoir', [App\Http\Controllers\PageController::class, 'aSavoir'])->name('a-savoir');
 
 
+Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/statistiques', [StatistiqueController::class, 'index'])->name('statistiques');
+    // ... autres routes admin ...
+});
+
+
+
+Route::get('/ocr', [OCRController::class, 'form'])->name('ocr.form');
+Route::post('/ocr', [OCRController::class, 'extractText'])->name('ocr.extract');

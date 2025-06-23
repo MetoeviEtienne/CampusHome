@@ -34,6 +34,10 @@
                         <i class="fas fa-map-marker-alt text-blue-500 mr-1"></i>
                         {{ $logement->adresse }}
                     </p>
+                    <p class="text-sm text-gray-500 mb-1">
+                        <i class="fas fa-location-arrow text-purple-500 mr-1"></i>
+                        {{ $logement->quartier }}
+                    </p>
 
                     <p class="text-sm text-gray-500 mb-1">
                         <i class="fas fa-phone-alt text-green-500 mr-1"></i>

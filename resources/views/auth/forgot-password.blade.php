@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-6">{{ __('Réinitialiser votre mot de passe') }}</h2>
+    <h2 class="text-center text-3xl font-extrabold text-white mb-6">{{ __('Réinitialiser votre mot de passe') }}</h2>
 
     <div class="mb-4 text-sm text-gray-600">
         {{ __("Vous avez oublié votre mot de passe ? Pas de problème. Indiquez-nous votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.") }}

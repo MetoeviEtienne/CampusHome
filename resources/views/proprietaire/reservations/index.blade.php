@@ -10,6 +10,42 @@
 @else
     <div class="space-y-5">
         @foreach ($reservations as $reservation)
+
+         @php
+             $avancePayee = $reservation->paiements->where('type', 'avance')->where('statut', 'payé')->isNotEmpty();
+            $loyerPaye = $reservation->paiements->where('type', 'loyer')->where('statut', 'payé')->isNotEmpty();
+        @endphp
+
+        <div class="bg-white p-5 rounded-lg shadow-md flex flex-col space-y-3 hover:shadow-lg transition-shadow duration-300">
+            @php
+            $avancePaiement = $reservation->paiements
+                ->where('type', 'avance')
+                ->where('statut', 'payé')
+                ->sortByDesc('created_at')
+                ->first();
+
+            $loyerPaiement = $reservation->paiements
+                ->where('type', 'loyer')
+                ->where('statut', 'payé')
+                ->sortByDesc('created_at')
+                ->first();
+                @endphp
+
+            {{-- Notifications paiement --}}
+            @if($avancePaiement)
+                <div class="bg-green-100 text-green-800 p-2 rounded font-semibold text-sm">
+                L'avance a été payée ✅<br>
+                <small>Paiement le {{ \Carbon\Carbon::parse($avancePaiement->created_at)->format('d/m/Y H:i') }}</small>
+                </div>
+            @endif
+
+            @if($loyerPaiement)
+                <div class="bg-blue-100 text-blue-800 p-2 rounded font-semibold text-sm">
+                Le loyer a été payé ✅<br>
+                <small>Paiement le {{ \Carbon\Carbon::parse($loyerPaiement->created_at)->format('d/m/Y H:i') }}</small>
+                </div>
+            @endif
+            
             <div class="bg-white p-5 rounded-lg shadow-md flex justify-between items-center hover:shadow-lg transition-shadow duration-300">
                 <div class="space-y-1 max-w-xl">
                     <p class="text-lg font-medium text-gray-900">

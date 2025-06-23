@@ -24,7 +24,7 @@
                             <img 
                                 src="{{ asset('storage/' . $photo->chemin) }}" 
                                 alt="Photo du logement" 
-                                class="w-28 h-28 object-cover rounded-lg flex-shrink-0"
+                                class="w-28 h-28 object-cover rounded-lg flex-shrink-0 shadow-md hover:scale-105 transform transition duration-300"
                                 loading="lazy"
                             >
                         @endforeach
@@ -35,14 +35,14 @@
                         <p><span class="font-semibold">Type :</span> {{ ucfirst($logement->type) }}</p>
                         <p><span class="font-semibold">Loyer :</span> {{ number_format($logement->loyer, 0, ',', ' ') }} FCFA</p>
                         <p><span class="font-semibold">Propriétaire :</span> {{ $logement->proprietaire->name }}</p>
-                        <p><span class="font-semibold">Numero de la Chambre :</span> {{ $logement->numChambre }}</p>
-                        <p><span class="font-semibold">Numero de la maison :</span> {{ $logement->numMaison }}</p>
+                        <p><span class="font-semibold">Numéro de la Chambre :</span> {{ $logement->numChambre }}</p>
+                        <p><span class="font-semibold">Numéro de la maison :</span> {{ $logement->numMaison }}</p>
 
                         <p>
                             <span class="font-semibold">Pièce d'identité :</span>
                             @if($logement->piece_identite_path)
-                                <a href="{{ asset('storage/' . $logement->piece_identite_path) }}" target="_blank" class="text-blue-600 underline hover:text-blue-800">
-                                    Voir le document
+                                <a href="{{ asset('storage/' . $logement->piece_identite_path) }}" target="_blank" class="text-blue-600 underline hover:text-blue-800 flex items-center gap-1">
+                                    <i class="fas fa-file-alt"></i> Voir le document
                                 </a>
                             @else
                                 <span class="text-gray-400 italic">Non disponible</span>
@@ -52,8 +52,8 @@
                         <p>
                             <span class="font-semibold">Titre de propriété :</span>
                             @if($logement->titre_propriete_path)
-                                <a href="{{ asset('storage/' . $logement->titre_propriete_path) }}" target="_blank" class="text-blue-600 underline hover:text-blue-800">
-                                    Voir le document
+                                <a href="{{ asset('storage/' . $logement->titre_propriete_path) }}" target="_blank" class="text-blue-600 underline hover:text-blue-800 flex items-center gap-1">
+                                    <i class="fas fa-file-alt"></i> Voir le document
                                 </a>
                             @else
                                 <span class="text-gray-400 italic">Non disponible</span>
@@ -64,15 +64,17 @@
                     <div class="flex gap-3 mt-auto">
                         <form method="POST" action="{{ route('admin.logements.valider', $logement) }}" class="flex-grow">
                             @csrf
-                            <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition">
-                                ✅ Valider
+                            <button type="submit" 
+                                    class="w-full flex items-center justify-center gap-2 bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition">
+                                <i class="fas fa-check-circle"></i> Valider
                             </button>
                         </form>
 
                         <form method="POST" action="{{ route('admin.logements.rejecter', $logement) }}" class="flex-grow">
                             @csrf
-                            <button type="submit" class="w-full bg-red-600 text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition">
-                                ❌ Rejeter
+                            <button type="submit" 
+                                    class="w-full flex items-center justify-center gap-2 bg-red-600 text-white py-2 rounded-lg font-semibold hover:bg-red-700 transition">
+                                <i class="fas fa-times-circle"></i> Rejeter
                             </button>
                         </form>
                     </div>

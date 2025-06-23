@@ -85,78 +85,7 @@
     </div>
 
     <!-- Liste des logements -->
-    <section>
-        <h3 class="text-2xl font-semibold text-gray-800 mb-6 border-b border-gray-300 pb-2">Mes logements</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @foreach ($logements as $logement)
-            <article class="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden flex flex-col">
-                {{-- Photos --}}
-                @if ($logement->photos->isNotEmpty())
-                <div class="grid grid-cols-3 gap-1 p-3 bg-gray-50">
-                    @foreach($logement->photos as $photo)
-                        <a href="{{ asset('storage/' . $photo->chemin) }}" target="_blank" class="block overflow-hidden rounded">
-                            <img src="{{ asset('storage/' . $photo->chemin) }}" alt="Photo"
-                                 class="h-24 w-full object-cover hover:scale-105 transition-transform duration-300" />
-                        </a>
-                    @endforeach
-                </div>
-                @else
-                <div class="h-48 bg-gray-100 flex items-center justify-center text-gray-400 italic">
-                    Aucune image disponible
-                </div>
-                @endif
-
-                {{-- Details --}}
-                <div class="p-5 flex flex-col flex-grow">
-                    <h4 class="font-bold text-lg text-gray-900 truncate">{{ $logement->titre }}</h4>
-                    <p class="text-sm text-gray-600 truncate">{{ $logement->adresse }}</p>
-                    <p class="text-sm text-gray-600 truncate">{{ $logement->quartier }}</p>
-                    <p class="mt-2 text-blue-700 font-semibold text-lg">
-                        {{ number_format($logement->loyer, 0, ',', ' ') }} FCFA / mois
-                    </p>
-
-                    <div class="mt-2 text-sm text-gray-700 space-y-1 flex-grow">
-                        <p><strong>Numero de la maison :</strong> {{ $logement->numMaison }}</p>
-                        <p><strong>Numero de la chambre :</strong> {{ $logement->numChambre }}</p>
-                        <p><strong>Propriétaire :</strong> {{ $logement->proprietaire->name }}</p>
-                        <p><strong>Téléphone :</strong> {{ $logement->proprietaire->phone ?? 'Non renseigné' }}</p>
-                        <p><strong>Description :</strong> <span class="block mt-1 text-gray-600 leading-relaxed">{{ Str::limit($logement->description, 120) }}</span></p>
-                    </div>
-
-                    <div class="mt-3">
-                        @if($logement->valide)
-                            <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                Publié
-                            </span>
-                        @elseif($logement->etat === 'rejeté')
-                            <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                                Rejeté
-                            </span>
-                        @else
-                            <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                En attente
-                            </span>
-                        @endif
-                    </div>
-
-                    <div class="mt-4 flex justify-between items-center text-sm text-blue-600 font-medium">
-                        <a href="{{ route('proprietaire.logements.edit', $logement) }}" class="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400 rounded">
-                            Modifier
-                        </a>
-                        <form action="{{ route('proprietaire.logements.destroy', $logement) }}" method="POST" onsubmit="return confirm('Confirmer la suppression ?')" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:underline focus:outline-none focus:ring-2 focus:ring-red-400 rounded">
-                                Supprimer
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </article>
-            @endforeach
-        </div>
-    </section>
-
+   
     <!-- Avis -->
     <section class="bg-white p-6 rounded-xl shadow-md">
         <h4 class="text-xl font-semibold text-gray-900 mb-5 border-b border-gray-200 pb-2">Avis sur mes logements</h4>

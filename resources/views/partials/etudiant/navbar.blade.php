@@ -17,7 +17,7 @@
     <!-- Barre de recherche toujours visible, à droite sur desktop -->
     <div class="flex-grow sm:flex-grow-0 sm:order-3 w-full sm:w-auto">
       <form action="{{ route('etudiant.logements.index') }}" method="GET" class="flex items-center gap-2">
-        <input type="text" name="search" placeholder="Ville ou loyer..."
+        <input type="text" name="search" placeholder="Ville, Quartier,Type ou loyer..."
                value="{{ request('search') }}"
                class="px-3 py-2 rounded-md text-gray-800 w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-blue-400" />
         <button type="submit"

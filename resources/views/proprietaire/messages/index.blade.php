@@ -39,7 +39,7 @@
         <div>
             <label for="destinataire_id" class="block text-sm font-medium text-gray-700 mb-1">Destinataire</label>
             <select name="destinataire_id" id="destinataire_id" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                <option value="">-- Choisir un destinataire --</option>
+                <option value="">Choisir un destinataire</option>
                 @foreach ($destinataires as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                 @endforeach

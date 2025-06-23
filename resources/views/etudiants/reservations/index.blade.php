@@ -27,11 +27,12 @@
                             <h2 class="text-xl font-semibold text-indigo-700">
                                 {{ $reservation->logement->titre ?? 'Titre non disponible' }}
                             </h2>
-                            <p><span class="font-semibold">🏙️ Ville :</span> {{ $reservation->logement->adresse ?? 'Non renseignée' }}</p>
-                            <p><span class="font-semibold">🏡 Type :</span> {{ $reservation->logement->type ?? 'Non renseigné' }}</p>
-                            <p><span class="font-semibold">📅 Période :</span> du {{ \Carbon\Carbon::parse($reservation->date_debut)->format('d/m/Y') }} au {{ \Carbon\Carbon::parse($reservation->date_fin)->format('d/m/Y') }}</p>
+                            <p><span class="font-semibold"><i class="fas fa-city mr-1 text-indigo-500"></i>Ville :</span> {{ $reservation->logement->adresse ?? 'Non renseignée' }}</p>
+                            <p><span class="font-semibold"><i class="fas fa-map-marker-alt mr-1 text-indigo-500"></i>Quartier :</span> {{ $reservation->logement->quartier ?? 'Non renseignée' }}</p>
+                            <p><span class="font-semibold"><i class="fas fa-home mr-1 text-indigo-500"></i>Type :</span> {{ $reservation->logement->type ?? 'Non renseigné' }}</p>
+                            <p><span class="font-semibold"><i class="fas fa-calendar-alt mr-1 text-indigo-500"></i>Période :</span> du {{ \Carbon\Carbon::parse($reservation->date_debut)->format('d/m/Y') }} au {{ \Carbon\Carbon::parse($reservation->date_fin)->format('d/m/Y') }}</p>
                             <p>
-                                <span class="font-semibold">🔖 Statut :</span>
+                                <span class="font-semibold"><i class="fas fa-tag mr-1 text-indigo-500"></i>Statut :</span>
                                 <span class="px-2 py-1 rounded text-sm font-medium
                                     @if($reservation->statut === 'approuvée') bg-green-100 text-green-700 
                                     @elseif($reservation->statut === 'rejetée') bg-red-100 text-red-700 
@@ -43,13 +44,13 @@
 
                             @if ($reservation->statut === 'approuvée' && $reservation->contrat)
                                 <a href="{{ asset('storage/' . $reservation->contrat) }}" download class="text-sm text-blue-600 hover:underline block">
-                                    📄 Télécharger le contrat PDF
+                                    <i class="fas fa-file-pdf mr-1"></i>Télécharger le contrat PDF
                                 </a>
                             @endif
 
                             <a href="{{ route('etudiant.logements.show', $reservation->logement_id) }}"
                                 class="text-sm text-indigo-600 hover:underline">
-                                🔍 Voir le logement
+                                <i class="fas fa-eye mr-1"></i>Voir le logement
                             </a>
                         </div>
 
@@ -70,7 +71,7 @@
                                     <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
 
                                     <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 text-sm transition">
-                                        💳 Payer {{ $type }}
+                                        <i class="fas fa-credit-card mr-1"></i>Payer {{ $type }}
                                     </button>
                                 </form>
                             @endif
@@ -79,14 +80,14 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="bg-red-600 text-white px-4 py-1.5 rounded-md text-sm hover:bg-red-700 transition">
-                                    🗑️ Supprimer
+                                    <i class="fas fa-trash-alt mr-1"></i>Supprimer
                                 </button>
                             </form>
 
                             @if ($reservation->paiement)
                                 <a href="{{ route('paiement.recu', $reservation->paiement->id) }}" target="_blank"
                                    class="bg-gray-700 text-white px-4 py-1.5 rounded-md text-sm hover:bg-gray-800 transition">
-                                    📥 Reçu de paiement
+                                    <i class="fas fa-receipt mr-1"></i>Reçu de paiement
                                 </a>
                             @endif
                         </div>
