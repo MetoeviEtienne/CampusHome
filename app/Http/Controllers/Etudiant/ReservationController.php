@@ -41,6 +41,8 @@ class ReservationController extends Controller
             'universite' => 'required|string|max:255',
             'autre_universite' => 'nullable|string|max:255',
             'inscription_pdf' => 'required|mimes:pdf|max:2048', // max 2Mo
+            'visite_date' => 'nullable|date|after_or_equal:today',       
+            'visite_heure' => 'nullable|date_format:H:i',                 
         ]);
 
         // Si l'étudiant a sélectionné "Autre", on utilise le champ texte
@@ -80,6 +82,8 @@ class ReservationController extends Controller
             'universite' => $universite,
             'inscription_pdf' => $pdfPath,
             'statut' => 'en_attente',
+            'visite_date' => $request->visite_date,    
+            'visite_heure' => $request->visite_heure,
         ]);
 
         // Notification au propriétaire

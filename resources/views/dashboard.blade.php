@@ -39,7 +39,7 @@
                         Aucune image disponible
                     </div>
                 @endif
-
+ 
                 {{-- Détails --}}
                 <div class="p-6 flex flex-col flex-grow">
                     <h2 class="text-xl font-bold text-gray-800 mb-1">{{ $logement->adresse }}</h2>

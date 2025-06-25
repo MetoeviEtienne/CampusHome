@@ -81,6 +81,22 @@
                     <input type="text" name="autre_universite" id="autre_universite" value="{{ old('autre_universite') }}"
                         class="w-full border-gray-300 rounded-xl px-4 py-2 shadow-sm">
                 </div>
+                
+                <div>
+                    <label for="visite_date" class="block text-sm font-medium text-gray-600 mb-1">
+                        <i class="fas fa-calendar-check mr-1 text-green-600"></i> Date de visite souhaitée
+                    </label>
+                    <input type="date" id="visite_date" name="visite_date"
+                        class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500 focus:outline-none shadow-sm">
+                </div>
+
+                <div>
+                    <label for="visite_heure" class="block text-sm font-medium text-gray-600 mb-1">
+                        <i class="fas fa-clock mr-1 text-green-600"></i> Heure de visite souhaitée
+                    </label>
+                    <input type="time" id="visite_heure" name="visite_heure"
+                        class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500 focus:outline-none shadow-sm">
+                </div>
 
                 <div>
                     <label for="inscription_pdf" class="block text-sm font-medium text-gray-700 mb-2">

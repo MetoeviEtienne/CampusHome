@@ -18,6 +18,10 @@ class Reservation extends Model
         'statut',
         'contrat',
         'contrat_signe',
+        'visite_date',      
+        'visite_heure',
+        'visite_confirmee',
+        'visite_rejetee',
     ];
 
     // Relation avec le logement

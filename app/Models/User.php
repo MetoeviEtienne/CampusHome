@@ -115,4 +115,11 @@ class User extends Authenticatable implements MustVerifyEmail
             ->map(fn (string $name) => Str::of($name)->substr(0, 1))
             ->implode('');
     }
+
+    // SMS
+    public function routeNotificationForTwilio()
+    {
+        return $this->phone; // suppose que le numéro est stocké dans `phone`
+    }
+
 }

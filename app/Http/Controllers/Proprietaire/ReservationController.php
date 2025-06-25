@@ -6,6 +6,8 @@ use App\Models\Reservation;
 use Illuminate\Http\Request;
 use App\Notifications\ReservationApproved;
 use App\Notifications\ReservationRejected;
+use App\Notifications\VisiteConfirmee;
+use App\Notifications\VisiteRejetee;
 use PDF;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,19 @@ class ReservationController extends Controller
         {
             public function index()
             {
+
+                $user = auth()->user();
+
+                if (!$user) {
+                    abort(403, "Vous devez être connecté.");
+                }
+
+                if ($user->role !== 'owner') {
+                    abort(403, "Accès réservé aux propriétaires.");
+                }
+
+                $logementIds = $user->logements()->pluck('id');
+
                 // Récupère les logements du propriétaire
                 $logementIds = auth()->user()->logements()->pluck('id');
 
@@ -52,6 +67,8 @@ class ReservationController extends Controller
             // Mettre à jour le statut
             $reservation->update(['statut' => 'approuvee']);
 
+            // Envoie une notification par e-mail/SMS
+            // $reservation->etudiant->notify(new ReservationConfirmeeNotification($reservation));
             // Génération du contrat PDF
             $pdf = PDF::loadView('contrats.contrat', [
                 'reservation' => $reservation,
@@ -87,6 +104,48 @@ class ReservationController extends Controller
         return back()->with('success', 'Réservation rejetée.');
     }
 
+    // Fonction pour la confirmation de visite
+     public function confirmerVisite(Reservation $reservation)
+    {
+        // Vérifie que le propriétaire connecté est bien celui du logement
+        if (auth()->id() !== $reservation->logement->proprietaire_id) {
+            abort(403);
+        }
+
+        // On confirme la visite
+        $reservation->update([
+            'visite_confirmee' => true,
+        ]);
+
+        // 🔥 Ajout essentiel pour éviter une erreur dans la notification
+        $reservation->loadMissing('logement');
+
+        // dd($reservation->etudiant->email);
+        // Notification à l’étudiant
+        $reservation->etudiant->notify(new VisiteConfirmee($reservation));
+
+        return redirect()->back()->with('success', 'Visite confirmée avec succès.');
+    }
+
+    // Fonction pour rejecter la visite
+    public function rejeterVisite(Reservation $reservation)
+    {
+        if ($reservation->logement->proprietaire_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $reservation->update([
+            'visite_confirmee' => false,
+            'visite_rejetee' => true,
+        ]);
+
+        // Notifie l'étudiant
+        $reservation->etudiant->notify(new VisiteRejetee($reservation));
+
+        return back()->with('success', 'La visite a été rejetée.');
+    }
+
+
     public function destroy(Reservation $reservation)
     {
         // Vérifie que le logement appartient au propriétaire connecté
@@ -98,6 +157,7 @@ class ReservationController extends Controller
 
         return redirect()->back()->with('success', 'Réservation supprimée avec succès.');
     }
+
 }
 
 

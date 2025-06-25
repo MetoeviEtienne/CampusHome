@@ -117,6 +117,71 @@
         </div>
     </section>
 
+    <!-- Video Splash Modal -->
+    <div id="videoSplash" 
+        class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50" style="display:none">
+        
+        <div class="relative w-full max-w-3xl mx-4 rounded-lg overflow-hidden shadow-lg">
+            <video id="splashVideo" autoplay muted playsinline class="w-full h-auto" >
+                <source src="{{ asset('videos/pub.mp4') }}" type="video/mp4" />
+                Votre navigateur ne supporte pas la vidéo.
+            </video>
+            <!-- Bouton Skip -->
+            <button id="skipBtn" 
+                class="absolute top-3 right-3 bg-gray-800 bg-opacity-70 text-white px-4 py-1 rounded hover:bg-gray-900 transition">
+                ❌
+            </button>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const splash = document.getElementById('videoSplash');
+        const video = document.getElementById('splashVideo');
+        const skipBtn = document.getElementById('skipBtn');
+
+        const DELAI_5_MIN = 1 * 60 * 1000; // 1 minutes en ms
+
+        // Affiche la vidéo
+        function afficherVideo() {
+            splash.style.display = 'flex';
+            video.currentTime = 0;
+            video.play();
+
+            // Quand on clique sur passer
+            skipBtn.onclick = () => {
+                video.pause();
+                splash.style.display = 'none';
+                localStorage.setItem('pubDerniereVue', Date.now());
+            };
+
+            // À la fin de la vidéo
+            video.onended = () => {
+                splash.style.display = 'none';
+                localStorage.setItem('pubDerniereVue', Date.now());
+            };
+        }
+
+        // Vérifie si on doit afficher la vidéo
+        function verifierEtAfficher() {
+            const derniereVue = localStorage.getItem('pubDerniereVue');
+            const maintenant = Date.now();
+
+            if (!derniereVue || (maintenant - derniereVue) > DELAI_5_MIN) {
+                afficherVideo();
+            }
+        }
+
+        verifierEtAfficher();
+
+        // Répète la vérification toutes les minutes pour ne rien rater (on peut augmenter cet intervalle si besoin)
+        setInterval(() => {
+            verifierEtAfficher();
+        }, 60 * 1000);
+    });
+    </script>
+
+
     <!-- À propos de CampusHome -->
 <section class="py-16 bg-gray-50">
     <div class="container mx-auto px-4 text-center">

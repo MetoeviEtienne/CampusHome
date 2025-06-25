@@ -340,6 +340,11 @@ Route::prefix('admin')->middleware(['auth:admin'])->name('admin.')->group(functi
     Route::post('/reservations/{reservation}/reject', [\App\Http\Controllers\Admin\ReservationController::class, 'rejeter'])->name('reservations.reject');
     Route::delete('/reservations/{reservation}', [\App\Http\Controllers\Admin\ReservationController::class, 'destroy'])->name('reservations.destroy');
 });
+Route::post('/reservations/{reservation}/confirmer-visite', [ReservationController::class, 'confirmerVisite'])
+    ->name('proprietaire.reservations.confirmerVisite');
+Route::post('/proprietaire/reservations/{reservation}/rejeter-visite', [ReservationController::class, 'rejeterVisite'])
+    ->name('proprietaire.reservations.rejeterVisite');
+
 
 // // Routes pour gestion des reservations par le pro
 // Route::post('/reservations/{reservation}/approve', [\App\Http\Controllers\Shared\ReservationSyncController::class, 'approveFromProprietaire'])->name('proprietaire.reservations.approve');

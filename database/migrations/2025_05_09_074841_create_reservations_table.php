@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreignId('etudiant_id')->constrained('users');
             $table->date('date_debut');
             $table->date('date_fin');
+            $table->date('visite_date')->nullable(); // 👈 Nouvelle colonne
+            $table->time('visite_heure')->nullable(); // 👈 Nouvelle colonne
+            $table->boolean('visite_confirmee')->default(false);
+            $table->boolean('visite_rejetee')->default(false);
             $table->string('universite'); // 👈 Université de l’étudiant
             $table->text('inscription_pdf'); // 👈 Chemin du PDF d’inscription_
             $table->enum('statut', ['en_attente', 'approuvée', 'rejetée', 'annulée']);
