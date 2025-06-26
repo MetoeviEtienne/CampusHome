@@ -12,6 +12,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+
+    public const STATUS_ACTIVE     = 'active';
+    public const STATUS_SUSPENDED  = 'suspended';
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -27,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'phone',
         'ville',
+        'status',
         'id_document'
     ];
   
@@ -80,7 +84,12 @@ class User extends Authenticatable implements MustVerifyEmail
         {
             return $this->hasMany(Avis::class, 'auteur_id');
         }
-
+    
+    // Suspension des proprietaires
+    public function isSuspended(): bool
+    {
+        return $this->status === self::STATUS_SUSPENDED;
+    }
         
     /**
      * The attributes that should be hidden for serialization.

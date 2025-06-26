@@ -36,6 +36,7 @@ class RegisteredUserController extends Controller
             'role' => ['required', 'in:student,owner'], // Validation du rôle
             'ville' => ['required', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
+            // 'status' => $request->role === 'owner' ? 'active' : null,
         ]);
 
         $user = User::create([
@@ -45,6 +46,7 @@ class RegisteredUserController extends Controller
             'ville' => $request['ville'],
             'role' => $request->role, // Enregistrement du rôle
             'phone' => $request['phone'] ?? null,
+            'status' => $request->role === 'owner' ? 'active' : null,
         ]);
 
         event(new Registered($user));

@@ -9,6 +9,25 @@
         </div>
     @endif
 
+    {{-- @if ($errors->has('email'))
+        <div class="mb-4">
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-sm" role="alert">
+                {{ $errors->first('email') }}
+            </div>
+        </div>
+    @endif --}}
+
+        @if ($errors->has('email'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{ $errors->first('email') }}',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif
+
     <h2 class="text-center text-3xl font-extrabold text-white mb-6">Se connecter</h2>
 
     <form method="POST" action="{{ route('login') }}">

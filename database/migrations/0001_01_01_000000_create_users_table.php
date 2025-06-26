@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['student', 'owner'])->default('student');
+            $table->string('status')->default('active')
             $table->string('phone')->nullable();
             $table->string('ville');
             $table->string('id_document')->nullable(); // Pour stocker le chemin du fichier

@@ -41,9 +41,7 @@
     {{-- Propriétaires --}}
     <section>
         <h2 class="text-xl font-semibold text-indigo-700 mb-6 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M9 16h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v12a2 2 0 01-2 2z" />
-            </svg>
+            <!-- icône -->
             Propriétaires ({{ $users->where('role', 'owner')->count() }})
         </h2>
 
@@ -54,16 +52,34 @@
                 @foreach ($users->where('role', 'owner') as $user)
                     <div class="bg-white shadow-md rounded-lg p-5 flex flex-col justify-between hover:shadow-lg transition">
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-900 truncate" title="{{ $user->name }}">{{ $user->name }}</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 truncate" title="{{ $user->name }}">
+                                {{ $user->name }}
+                            </h3>
                             <p class="text-sm text-gray-600 truncate" title="{{ $user->email }}">{{ $user->email }}</p>
                             <p class="text-sm text-gray-600 mt-1 capitalize">{{ $user->ville ?? 'Ville non renseignée' }}</p>
                         </div>
+
                         <div class="mt-4 flex justify-end gap-4 text-sm">
-                            <a href="{{ route('admin.users.edit', $user) }}" class="text-blue-600 hover:text-blue-800 font-medium">Modifier</a>
-                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('Supprimer cet utilisateur ?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-800 font-medium">Supprimer</button>
+                            {{-- BOUTON SUSPENDRE / ACTIVER --}}
+                            @if($user->isSuspended())
+                                <form action="{{ route('admin.users.activate', $user) }}" method="POST"
+                                    onsubmit="return confirm('Ré-activer ce propriétaire ?');">
+                                    @csrf @method('PATCH')
+                                    <button class="text-green-600 hover:text-green-800 font-medium">Activer</button>
+                                </form>
+                            @else
+                                <form action="{{ route('admin.users.suspend', $user) }}" method="POST"
+                                    onsubmit="return confirm('Suspendre ce propriétaire ?');">
+                                    @csrf @method('PATCH')
+                                    <button class="text-yellow-600 hover:text-yellow-800 font-medium">Suspendre</button>
+                                </form>
+                            @endif
+
+                            {{-- BOUTON SUPPRIMER (inchangé) --}}
+                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST"
+                                onsubmit="return confirm('Supprimer cet utilisateur ?');">
+                                @csrf @method('DELETE')
+                                <button class="text-red-600 hover:text-red-800 font-medium">Supprimer</button>
                             </form>
                         </div>
                     </div>

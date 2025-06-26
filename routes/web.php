@@ -382,6 +382,12 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     // ... autres routes admin ...
 });
 
+// Suspendre et activer les propriétaires par l'administrateurs
+Route::prefix('admin')->middleware('auth:admin')->group(function () {
+    // …
+    Route::patch('/users/{user}/suspend',  [UserController::class, 'suspend'])->name('admin.users.suspend');
+    Route::patch('/users/{user}/activate', [UserController::class, 'activate'])->name('admin.users.activate');
+});
 
 
 Route::get('/ocr', [OCRController::class, 'form'])->name('ocr.form');

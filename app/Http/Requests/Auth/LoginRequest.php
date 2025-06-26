@@ -37,18 +37,66 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+    // public function authenticate(): void
+    // {
+    //     $this->ensureIsNotRateLimited();
+
+    //     // if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+    //     //     RateLimiter::hit($this->throttleKey());
+
+    //     //     throw ValidationException::withMessages([
+    //     //         'email' => trans('auth.failed'),
+    //     //     ]);
+    //     // }
+
+    //     $credentials = $this->only('email', 'password');
+    //     $credentials['status'] = 'active'; // Ajoute cette ligne pour bloquer les comptes suspendus
+
+    //     if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+    //         RateLimiter::hit($this->throttleKey());
+
+    //        // On récupère l'utilisateur, même s’il est suspendu
+    //     $user = \App\Models\User::where('email', $this->email)->first();
+
+    //     $message = 'Identifiants invalides.';
+
+    //     if ($user && $user->status !== 'active') {
+    //         $message = 'Votre compte est suspendu. Veuillez contacter l’administration.';
+    //     }
+
+    //     throw ValidationException::withMessages([
+    //         'email' => $message,
+    //     ]);
+
+    //     }
+    //     RateLimiter::clear($this->throttleKey());
+    // }
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
+        // 1) On récupère l’utilisateur (s’il existe)
+        $user = \App\Models\User::where('email', $this->email)->first();
+
+        // 2) Blocage ciblé : propriétaire suspendu
+        if ($user && $user->role === 'owner' && $user->status !== 'active') {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => 'Votre compte est suspendu. Veuillez contacter l’administration.',
+            ]);
+        }
+
+        // 3) Tentative d’authentification classique
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => 'Email ou mot de passe incorrect.',
             ]);
         }
 
+        // 4) Succès : on réinitialise le compteur
         RateLimiter::clear($this->throttleKey());
     }
 

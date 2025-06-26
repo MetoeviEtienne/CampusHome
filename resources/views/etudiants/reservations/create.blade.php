@@ -45,7 +45,7 @@
                     <label for="date_debut" class="block text-sm font-medium text-gray-600 mb-1">
                         <i class="fas fa-calendar-alt mr-1 text-blue-600"></i> Date de début
                     </label>
-                    <input type="date" id="date_debut" name="date_debut" required
+                   <input type="date" id="date_debut" name="date_debut" required min="{{ now()->addDay()->toDateString() }}"
                         class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm">
                 </div>
 
@@ -54,7 +54,8 @@
                         <i class="fas fa-calendar-times mr-1 text-blue-600"></i> Date de fin (max 5 jours)
                     </label>
                     <input type="date" id="date_fin" name="date_fin" required
-                        class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm">
+                        class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm"
+                        min="">
                 </div>
 
                 <div>
@@ -87,7 +88,8 @@
                         <i class="fas fa-calendar-check mr-1 text-green-600"></i> Date de visite souhaitée
                     </label>
                     <input type="date" id="visite_date" name="visite_date"
-                        class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500 focus:outline-none shadow-sm">
+                        class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-green-500 focus:outline-none shadow-sm"
+                        min="">
                 </div>
 
                 <div>
@@ -170,5 +172,73 @@
         const universiteSelect = document.getElementById('universite');
         toggleAutreUniversite(universiteSelect.value);
     });
+
+    
+    // Gestion des dates
+    
+document.addEventListener('DOMContentLoaded', () => {
+    const dateDebut   = document.getElementById('date_debut');
+    const dateFin     = document.getElementById('date_fin');
+    const visiteDate  = document.getElementById('visite_date');
+
+    /* 1°  Limiter date_debut à demain */
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    dateDebut.min = tomorrow.toISOString().split('T')[0];
+
+    /* 2°  Fonction de mise à jour des contraintes */
+    function updateConstraints() {
+
+        /* — Contraintes de date_fin — */
+        if (dateDebut.value) {
+            const start   = new Date(dateDebut.value);
+            const maxEnd  = new Date(start);
+            maxEnd.setDate(start.getDate() + 5);   // début + 5 jours
+
+            dateFin.min = dateDebut.value;
+            dateFin.max = maxEnd.toISOString().split('T')[0];
+        } else {
+            dateFin.min = '';
+            dateFin.max = '';
+        }
+
+        /* — Contraintes de visite_date — */
+        if (dateDebut.value) {
+            visiteDate.min = dateDebut.value;      // min = date_debut
+        } else {
+            visiteDate.min = '';
+        }
+
+        if (dateFin.value) {
+            visiteDate.max = dateFin.value;        // max = date_fin
+        } else {
+            visiteDate.max = '';
+        }
+
+        /* — Réinitialiser les valeurs hors plage — */
+        if (visiteDate.value && visiteDate.value < visiteDate.min) {
+            visiteDate.value = '';
+        }
+        if (visiteDate.value && visiteDate.max && visiteDate.value > visiteDate.max) {
+            visiteDate.value = '';
+        }
+        if (dateFin.value && dateFin.value < dateFin.min) {
+            dateFin.value = '';
+        }
+    }
+
+    /* 3°  Écouteurs */
+    dateDebut.addEventListener('change', () => {
+        dateFin.value = '';
+        visiteDate.value = '';
+        updateConstraints();
+    });
+
+    dateFin.addEventListener('change', updateConstraints);
+});
+
+
 </script>
+
+
 @endsection
