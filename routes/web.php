@@ -389,6 +389,11 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::patch('/users/{user}/activate', [UserController::class, 'activate'])->name('admin.users.activate');
 });
 
+// Supprimer l'historique
+Route::delete('/logements/historique', [ValidationLogementController::class, 'viderHistorique'])->name('admin.logements.historique.vider');
+// Route pour vider l'historique des paiements
+Route::delete('/admin/paiements/vider', [PaiementController::class, 'vider'])->name('admin.paiements.vider');
+
 
 Route::get('/ocr', [OCRController::class, 'form'])->name('ocr.form');
 Route::post('/ocr', [OCRController::class, 'extractText'])->name('ocr.extract');

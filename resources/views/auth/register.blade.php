@@ -35,9 +35,17 @@
             <!-- Colonne droite -->
             <div>
                 <label for="phone" class="block text-gray-700 font-semibold mb-2">Téléphone</label>
-                <input id="phone" name="phone" type="text" required
-                    value="{{ old('phone') }}"
-                    class="block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                <input  id="phone"
+                        name="phone"
+                        type="tel"
+                        inputmode="tel"
+                        pattern="^\+22901\d{8}$"
+                        placeholder="+22901XXXXXXXX"
+                        required
+                        value="{{ old('phone') }}"
+                        class="block w-full px-4 py-3 text-lg border border-gray-300 rounded-lg
+                            focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                <p class="text-sm text-gray-500 mt-1">Format attendu : <kbd>+22901XXXXXXXX</kbd></p>
                 @error('phone')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror

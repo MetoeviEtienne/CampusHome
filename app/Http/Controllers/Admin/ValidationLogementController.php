@@ -76,4 +76,16 @@ class ValidationLogementController extends Controller
         
             return view('admin.logements.historique', compact('proprietaires'));
         }   
+
+    // Méthode pour vider l'historique des logements validés ou rejetés
+    public function viderHistorique()
+        {
+            // Supprimer les logements validés ou rejetés
+            Logement::where('valide', true)
+                ->orWhere('etat', 'rejeté')
+                ->delete();
+
+            return redirect()->route('admin.logements.historique')->with('success', 'Historique vidé avec succès.');
+        }
+
 }

@@ -40,7 +40,12 @@ class PaiementController extends Controller
             $reservationId = $request->get('data');
             $status = $request->get('status');
             $amount = floatval($request->get('amount'));
-            $transactionId = $request->get('transactionId');
+            $transactionId = $request->get('transactionId') ?? $request->get('transaction_id'); // sécurité
+
+             if (!$reservationId) {
+                 return redirect()->route('etudiant.reservations.index')
+                         ->with('Succès', 'Paiément effectué.');
+    }
 
             $reservation = Reservation::with('logement.proprietaire', 'etudiant')->findOrFail($reservationId);
             $logement = $reservation->logement;

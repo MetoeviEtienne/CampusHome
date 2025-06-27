@@ -5,9 +5,25 @@
 @section('content')
 <div class="container mx-auto p-6 max-w-7xl">
 
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <h2 class="text-3xl font-extrabold mb-8 text-center text-gray-800">
         Historique des logements validés ou rejetés
     </h2>
+
+        <div class="mb-6 text-right">
+            <form action="{{ route('admin.logements.historique.vider') }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment vider l’historique ?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg shadow">
+                    Vider l'historique
+                </button>
+            </form>
+        </div>
 
     @forelse($proprietaires as $proprietaire)
         <section class="mb-12">

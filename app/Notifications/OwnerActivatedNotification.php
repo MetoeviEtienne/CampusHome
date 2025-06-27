@@ -37,8 +37,8 @@ class OwnerActivatedNotification extends Notification
         return (new MailMessage)
             ->subject('Votre compte CampusHome est ré-activé')
             ->greeting('Bonjour '.$notifiable->name.',')
-            ->line('Bonne nouvelle ! Votre compte propriétaire vient d’être ré-activé. Vous pouvez à nouveau vous connecter.')
-            ->salutation('— L’équipe CampusHome');
+            ->line('Bonne nouvelle ! Votre compte vient d’être **ré-activé**. Vous pouvez à nouveau vous connecter.')
+            ->salutation('L’équipe CampusHome');
     }
 
     /**

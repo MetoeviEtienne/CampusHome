@@ -35,7 +35,8 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'in:student,owner'], // Validation du rôle
             'ville' => ['required', 'string', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:20'],
+            'phone' => ['required', 'regex:/^\+22901\d{8}$/'],
+            // 'phone' => ['nullable', 'string', 'max:20'],
             // 'status' => $request->role === 'owner' ? 'active' : null,
         ]);
 

@@ -37,7 +37,7 @@ class OwnerSuspendedNotification extends Notification
         return (new MailMessage)
             ->subject('Votre compte CampusHome est suspendu')
             ->greeting('Bonjour '.$notifiable->name.',')
-            ->line('Votre compte propriétaire a été **suspendu** par l’équipe d’administration.')
+            ->line('Votre compte a été **suspendu** par l’équipe d’administration.')
             ->line('Vous ne pourrez plus accéder à votre tableau de bord tant que votre compte restera suspendu.')
             ->line('Pour toute question, répondez directement à ce courriel.');
     }
